@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewo — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;min-height:100vh;padding:24px}
+.container{max-width:900px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid #1f1f1f}
+.logo{font-family:'Fraunces',serif;font-size:26px;font-weight:900}
+.logo span{color:#00e676}
+.logout{background:transparent;color:#666;border:1px solid #1f1f1f;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:13px}
+.welcome{font-family:'Fraunces',serif;font-size:32px;font-weight:900;margin-bottom:8px}
+.welcome em{color:#00e676;font-style:italic}
+.sub{color:#666;margin-bottom:32px}
+.card{background:#131313;border:1px solid #1f1f1f;border-radius:16px;padding:24px;margin-bottom:16px}
+.card h3{font-family:'Fraunces',serif;font-size:18px;margin-bottom:16px}
+.info-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #1f1f1f;font-size:14px}
+.info-row:last-child{border:none}
+.info-row .label{color:#666}
+.info-row .val{font-weight:500}
+.link-box{background:#0a0a0a;border:1px solid #1f1f1f;border-radius:10px;padding:14px;font-family:monospace;font-size:12px;word-break:break-all;color:#00e676;margin-top:8px}
+.loading{text-align:center;padding:40px;color:#666}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">Reviewo<span>.</span></div>
+    <button class="logout" onclick="logout()">Déconnexion</button>
+  </div>
+  <div id="content" class="loading">Chargement...</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const SUPABASE_URL = 'https://xivfhmivalfcnbkvxwbm.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_Czi3OLTboQSGmP2nA0NBUQ_koXPrn5x'
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+async function load() {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) {
+    window.location.href = '/inscription.html'
+    return
+  }
+
+  const { data: commerce } = await supabase
+    .from('commerces')
+    .select('*')
+    .eq('user_id', session.user.id)
+    .single()
+
+  if (!commerce) {
+    document.getElementById('content').innerHTML = '<p style="color:#ef4444">Erreur : commerce introuvable</p>'
+    return
+  }
+
+  const voteLink = `${window.location.origin}/vote.html?c=${commerce.id}`
+
+  document.getElementById('content').innerHTML = `
+    <h1 class="welcome">Bienvenue, <em>${commerce.nom}</em></h1>
+    <p class="sub">Voici votre espace Reviewo</p>
+
+    <div class="card">
+      <h3>📋 Informations</h3>
+      <div class="info-row"><span class="label">Nom</span><span class="val">${commerce.nom}</span></div>
+      <div class="info-row"><span class="label">Email</span><span class="val">${commerce.email}</span></div>
+      <div class="info-row"><span class="label">Plan</span><span class="val">${commerce.plan}</span></div>
+    </div>
+
+    <div class="card">
+      <h3>🔗 Votre lien de vote</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:8px">Envoyez ce lien par SMS à vos clients</p>
+      <div class="link-box">${voteLink}</div>
+    </div>
+  `
+}
+
+window.logout = async function() {
+  await supabase.auth.signOut()
+  window.location.href = '/inscription.html'
+}
+
+load()
+</script>
+</body>
+</html>
