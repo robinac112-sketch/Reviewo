@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewo — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;min-height:100vh;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1f1f1f}
+.logo{font-family:'Fraunces',serif;font-size:24px;font-weight:900}
+.logo span{color:#00e676}
+.logout{background:transparent;color:#666;border:1px solid #1f1f1f;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px}
+.welcome{font-family:'Fraunces',serif;font-size:28px;font-weight:900;margin-bottom:6px}
+.welcome em{color:#00e676;font-style:italic}
+.sub{color:#666;margin-bottom:28px;font-size:14px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:18px}
+.stat-label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.stat-value{font-family:'Fraunces',serif;font-size:28px;font-weight:900;line-height:1}
+.stat-value.green{color:#00e676}
+.stat-sub{font-size:12px;color:#666;margin-top:4px}
+.card{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:22px;margin-bottom:16px}
+.card-title{font-family:'Fraunces',serif;font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.btn{background:#00e676;color:#0a0a0a;border:none;padding:12px 18px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:600;cursor:pointer;width:100%;transition:opacity .2s}
+.btn:hover{opacity:.88}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-gold{background:#f5c842;color:#0a0a0a}
+.btn-ghost{background:transparent;color:#f2efe8;border:1px solid #1f1f1f}
+.poster-preview{background:#fff;border-radius:14px;padding:20px;margin-bottom:14px;display:flex;justify-content:center;overflow:auto}
+.poster{width:420px;background:linear-gradient(135deg,#fffbed 0%,#fff 50%,#fef3e2 100%);border:2px solid #f5c842;border-radius:20px;padding:36px 28px;text-align:center;color:#0a0a0a;font-family:'DM Sans',sans-serif;position:relative;overflow:hidden}
+.poster::before{content:'';position:absolute;top:0;left:0;right:0;height:6px;background:linear-gradient(90deg,#f5c842,#ff6b35)}
+.poster-eyebrow{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:#ff6b35;margin-bottom:14px}
+.poster-biz{font-family:'Fraunces',serif;font-size:30px;font-weight:900;letter-spacing:-1px;margin-bottom:8px;line-height:1.1;color:#0a0a0a}
+.poster-divider{width:50px;height:3px;background:#f5c842;margin:14px auto;border-radius:2px}
+.poster-msg{font-size:17px;font-weight:500;margin-bottom:20px;line-height:1.4;color:#333}
+.poster-gift-box{background:#fff;border:2px solid #f5c842;border-radius:14px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:#0a0a0a;font-weight:600}
+.poster-gift-box strong{color:#ff6b35;font-size:16px}
+.poster-qr-wrap{background:#fff;padding:14px;border-radius:14px;display:inline-block;box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.poster-qr-wrap img{display:block;width:180px;height:180px}
+.poster-steps{display:flex;justify-content:space-around​​​​​​​​​​​​​​​​ <script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const SUPABASE_URL = 'https://xivfhmivalfcnbkvxwbm.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_Czi3OLTboQSGmP2nA0NBUQ_koXPrn5x'
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+let commerce = null
+let avis = []
+
+async function load() {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) { window.location.href = '/inscription.html'; return }
+
+  const { data: c } = await supabase.from('commerces').select('*').eq('user_id', session.user.id).single()
+  if (!c) { document.getElementById('content').innerHTML = '<p style="color:#ef4444">Commerce introuvable</p>'; return }
+  commerce = c
+
+  const { data: a } = await supabase.from('avis').select('*').eq('commerce_id', c.id).order('created_at', { ascending: false })
+  avis = a || []
+
+  render()
+}
+
+async function render() {
+  const total = avis.length
+  const googleCount = avis.filter(a => a.redirige_google).length
+  const avgNote = total > 0 ? (avis.reduce((s,a) => s+a.note, 0) / total).toFixed(1) : '—'
+  const redirectRate = total > 0 ? Math.round((googleCount / total) * 100) : 0
+
+  const voteLink = `${window.location.origin}/vote.html?c=${commerce.id}`
+  const qrImageUrl = `https://api.qrserver.com/v1/create-qr-code/?size=360x360&margin=10&data=${encodeURIComponent(voteLink)}`
+  const currentMonth = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
+
+  const eligibles = avis.filter(a => a.redirige_google && a.telephone)
+  const { data: tirages } = await supabase.from('tirages').select('*').eq('commerce_id', commerce.id).order('created_at', { ascending: false })
+  const lastTirage = tirages?.[0]
+
+  let html = '<h1 class="welcome">Bienvenue, <em>' + commerce.nom + '</em></h1>'
+  html += '<p class="sub">Tableau de bord · ' + currentMonth + '</p>'
+
+  html += '<div class="stats-grid">'
+  html += '<div class="stat"><div class="stat-label">Avis collectés</div><div class="stat-value">' + total + '</div><div class="stat-sub">Depuis le début</div></div>'
+  html += '<div class="stat"><div class="stat-label">Redirigés Google</div><div class="stat-value green">' + googleCount + '</div><div class="stat-sub">' + redirectRate + '% de taux</div></div>'
+  html += '<div class="stat"><div class="stat-label">Note moyenne</div><div class="stat-value">' + avgNote + (total > 0 ? ' ⭐' : '') + '</div><div class="stat-sub">Sur 5</div></div>'
+  html += '<div class="stat"><div class="stat-label">Plan actif</div><div class="stat-value green" style="font-size:22px">' + commerce.plan + '</div><div class="stat-sub">Actif</div></div>'
+  html += '</div>'
+
+  html += '<div class="card">'
+  html += '<div class="card-title">🎨 Votre affiche Reviewo</div>'
+  html += '<p style="font-size:13px;color:#666;margin-bottom:16px">Téléchargez, imprimez et collez cette affiche à la caisse ou sur les tables.</p>'
+  html += '<div class="poster-preview"><div class="poster" id="poster">'
+  html += '<div class="poster-eyebrow">✨ Votre avis compte</div>'
+  html += '<div class="poster-biz">' + commerce.nom + '</div>'
+  html += '<div class="poster-divider"></div>'
+  html += '<div class="poster-msg">Aidez-nous à nous améliorer<br>en <strong>30 secondes</strong> !</div>'
+  html += '<div class="poster-gift-box">🎁 Laissez un avis et tentez de gagner<br><strong>' + (commerce.lot || 'un cadeau') + '</strong></div>'
+  html += '<div class="poster-qr-wrap"><img src="' + qrImageUrl + '" alt="QR Code" crossorigin="anonymous"></div>'
+  html += '<div class="poster-steps">'
+  html += '<div class="poster-step"><div class="poster-step-num">1</div><span>Scannez</span></div>'
+  html += '<div class="poster-step"><div class="poster-step-num">2</div><span>Notez</span></div>'
+  html += '<div class="poster-step"><div class="poster-step-num">3</div><span>Tentez de gagner</span></div>'
+  html += '</div>'
+  html += '<div class="poster-footer">Propulsé par <strong>REVIEWO</strong></div>'
+  html += '</div></div>'
+  html += '<button class="btn" onclick="downloadPoster()">📥 Télécharger l\'affiche (PNG)</button>'
+  html += '</div>'
+
+  html += '<div class="card">'
+  html += '<div class="card-title">🎁 Tirage au sort mensuel</div>'
+  html += '<div class="lot-box">'
+  html += '<label style="font-size:12px;color:#666;display:block;margin-bottom:6px">Lot à faire gagner</label>'
+  html += '<input type="text" class="lot-input" id="lot-input" value="' + (commerce.lot || '') + '" placeholder="Ex: Bon d\'achat 50€">'
+  html += '<button class="btn btn-ghost" style="width:auto;padding:8px 14px;font-size:12px" onclick="saveLot()">💾 Enregistrer le lot</button>'
+  html += '<div class="lot-stats"><span style="font-size:13px;color:#888">Participants éligibles</span><span class="lot-count">' + eligibles.length + '</span></div>'
+  html += '</div>'
+  html += '<button class="btn btn-gold" onclick="doTirage()"' + (eligibles.length === 0 ? ' disabled' : '') + '>🎲 ' + (eligibles.length === 0 ? 'Aucun participant' : 'Lancer le tirage au sort') + '</button>'
+  if (lastTirage) {
+    html += '<div class="winner-box"><div class="winner-title">🏆 Dernier gagnant</div><div class="winner-phone">' + lastTirage.telephone_gagnant + '</div><div class="winner-date">Lot : ' + lastTirage.lot + ' · ' + new Date(lastTirage.created_at).toLocaleDateString('fr-FR') + '</div></div>'
+  }
+  html += '</div>'
+
+  html += '<div class="card"><div class="card-title">⭐ Avis récents</div>'
+  if (total === 0) {
+    html += '<div class="empty">Aucun avis pour le moment.<br>Imprimez votre affiche pour commencer !</div>'
+  } else {
+    avis.slice(0, 10).forEach(a => {
+      const stars = '⭐'.repeat(a.note) + '☆'.repeat(5 - a.note)
+      const date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
+      html += '<div class="review-item">'
+      html += '<div class="review-avatar">' + (a.note >= 4 ? '😊' : a.note >= 3 ? '😐' : '😞') + '</div>'
+      html += '<div class="review-meta">'
+      html += '<div class="review-top"><span class="review-stars">' + stars + '</span><span class="review-time">' + date + '</span></div>'
+      if (a.commentaire) html += '<div class="review-text">"' + a.commentaire + '"</div>'
+      if (a.problemes && a.problemes.length > 0) html += '<div class="review-text" style="color:#666">Problèmes : ' + a.problemes.join(', ') + '</div>'
+      html += '<span class="review-tag ' + (a.redirige_google ? 'tag-google' : 'tag-internal') + '">' + (a.redirige_google ? '✓ Envoyé vers Google' : '⚠ Avis interne') + '</span>'
+      html += '</div></div>'
+    })
+  }
+  html += '</div>'
+
+  html += '<div class="card"><div class="card-title">📋 Informations</div>'
+  html += '<div class="info-row"><span class="label">Nom</span><span class="val">' + commerce.nom + '</span></div>'
+  html += '<div class="info-row"><span class="label">Email</span><span class="val">' + commerce.email + '</span></div>'
+  html += '<div class="info-row"><span class="label">Lien Google</span><span class="val" style="font-size:11px">' + (commerce.lien_google || 'Non configuré') + '</span></div>'
+  html += '</div>'
+
+  document.getElementById('content').innerHTML = html
+}
+
+window.downloadPoster = async function() {
+  const poster = document.getElementById('poster')
+  const canvas = await html2canvas(poster, { scale: 3, useCORS: true, backgroundColor: null })
+  const link = document.createElement('a')
+  link.download = 'reviewo-affiche-' + commerce.nom.replace(/\s/g,'-') + '.png'
+  link.href = canvas.toDataURL('image/png')
+  link.click()
+}
+
+window.saveLot = async function() {
+  const newLot = document.getElementById('lot-input').value.trim()
+  if (!newLot) return alert('Veuillez saisir un lot')
+  const { error } = await supabase.from('commerces').update({ lot: newLot }).eq('id', commerce.id)
+  if (error) return alert('Erreur lors de l\'enregistrement')
+  commerce.lot = newLot
+  alert('Lot enregistré !')
+  render()
+}
+
+window.doTirage = async function() {
+  const eligibles = avis.filter(a => a.redirige_google && a.telephone)
+  if (eligibles.length === 0) return alert('Aucun participant éligible')
+  if (!confirm('Lancer le tirage parmi ' + eligibles.length + ' participant(s) ?')) return
+
+  const winner = eligibles[Math.floor(Math.random() * eligibles.length)]
+  const mois = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
+
+  const { error } = await supabase.from('tirages').insert({
+    commerce_id: commerce.id,
+    avis_id: winner.id,
+    lot: commerce.lot || 'Lot',
+    telephone_gagnant: winner.telephone,
+    mois: mois
+  })
+  if (error) return alert('Erreur lors du tirage')
+
+  alert('🎉 Gagnant !\nNuméro : ' + winner.telephone + '\nLot : ' + commerce.lot)
+  load()
+}
+
+window.logout = async function() {
+  await supabase.auth.signOut()
+  window.location.href = '/inscription.html'
+}
+
+load()
+</script>
+</body>
+</html>
+
