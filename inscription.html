@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewo — Inscription</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{background:#131313;border:1px solid #1f1f1f;border-radius:20px;padding:40px 32px;width:100%;max-width:440px}
+.logo{font-family:'Fraunces',serif;font-size:28px;font-weight:900;text-align:center;margin-bottom:8px}
+.logo span{color:#00e676}
+.subtitle{text-align:center;color:#666;font-size:14px;margin-bottom:32px}
+.tabs{display:flex;gap:4px;background:#0a0a0a;border-radius:10px;padding:4px;margin-bottom:28px}
+.tab{flex:1;padding:10px;text-align:center;font-size:14px;color:#666;cursor:pointer;border-radius:8px;transition:all .2s}
+.tab.active{background:#1f1f1f;color:#f2efe8;font-weight:500}
+.form{display:none}
+.form.active{display:block}
+label{display:block;font-size:13px;color:#666;margin-bottom:6px;margin-top:16px}
+input{width:100%;background:#0a0a0a;border:1.5px solid #1f1f1f;border-radius:10px;padding:14px;color:#f2efe8;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;transition:border-color .2s}
+input:focus{border-color:#00e676}
+.btn{width:100%;padding:14px;background:#00e676;color:#0a0a0a;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:24px;transition:opacity .2s}
+.btn:hover{opacity:.88}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.msg{margin-top:16px;padding:12px;border-radius:10px;font-size:13px;text-align:center;display:none}
+.msg.error{background:rgba(239,68,68,.1);color:#ef4444;border:1px solid rgba(239,68,68,.2);display:block}
+.msg.success{background:rgba(0,230,118,.1);color:#00e676;border:1px solid rgba(0,230,118,.2);display:block}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">Reviewo<span>.</span></div>
+  <div class="subtitle">Espace commerçant</div>
+
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('login')">Connexion</div>
+    <div class="tab" onclick="switchTab('signup')">Inscription</div>
+  </div>
+
+  <div class="form active" id="form-login">
+    <label>Email</label>
+    <input type="email" id="login-email" placeholder="marco@restaurant.fr">
+    <label>Mot de passe</label>
+    <input type="password" id="login-password" placeholder="••••••••">
+    <button class="btn" onclick="login()">Se connecter →</button>
+  </div>
+
+  <div class="form" id="form-signup">
+    <label>Nom du commerce</label>
+    <input type="text" id="signup-nom" placeholder="Chez Marco">
+    <label>Email</label>
+    <input type="email" id="signup-email" placeholder="marco@restaurant.fr">
+    <label>Mot de passe</label>
+    <input type="password" id="signup-password" placeholder="Minimum 6 caractères">
+    <label>Lien Google Avis</label>
+    <input type="text" id="signup-google" placeholder="https://g.page/r/...">
+    <button class="btn" onclick="signup()">Créer mon compte →</button>
+  </div>
+
+  <div class="msg" id="msg"></div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const SUPABASE_URL = 'https://xivfhmivalfcnbkvxwbm.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_Czi3OLTboQSGmP2nA0NBUQ_koXPrn5x'
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+window.switchTab = function(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+  document.querySelectorAll('.form').forEach(f => f.classList.remove('active'))
+  event.target.classList.add('active')
+  document.getElementById('form-' + tab).classList.add('active')
+  document.getElementById('msg').className = 'msg'
+}
+
+function showMsg(text, type) {
+  const msg = document.getElementById('msg')
+  msg.textContent = text
+  msg.className = 'msg ' + type
+}
+
+window.login = async function() {
+  const email = document.getElementById('login-email').value
+  const password = document.getElementById('login-password').value
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) {
+    showMsg('Email ou mot de passe incorrect', 'error')
+    return
+  }
+  showMsg('Connexion réussie ! Redirection...', 'success')
+  setTimeout(() => window.location.href = '/dashboard.html', 1000)
+}
+
+window.signup = async function() {
+  const nom = document.getElementById('signup-nom').value
+  const email = document.getElementById('signup-email').value
+  const password = document.getElementById('signup-password').value
+  const google = document.getElementById('signup-google').value
+
+  if (!nom || !email || !password) {
+    showMsg('Merci de remplir tous les champs', 'error')
+    return
+  }
+
+  const { data: authData, error: authError } = await supabase.auth.signUp({ email, password })
+  if (authError) {
+    showMsg(authError.message, 'error')
+    return
+  }
+
+  const { error: commerceError } = await supabase.from('commerces').insert({
+    nom: nom,
+    email: email,
+    lien_google: google,
+    plan: 'starter',
+    user_id: authData.user.id
+  })
+
+  if (commerceError) {
+    showMsg('Erreur lors de la création du commerce', 'error')
+    return
+  }
+
+  showMsg('Compte créé ! Redirection...', 'success')
+  setTimeout(() => window.location.href = '/dashboard.html', 1000)
+}
+
+supabase.auth.getSession().then(({ data }) => {
+  if (data.session) window.location.href = '/dashboard.html'
+})
+</script>
+</body>
+</html>
