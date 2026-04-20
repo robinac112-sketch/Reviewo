@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewo — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;min-height:100vh;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1f1f1f}
+.logo{font-family:'Fraunces',serif;font-size:24px;font-weight:900}
+.logo span{color:#00e676}
+.logout{background:transparent;color:#666;border:1px solid #1f1f1f;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px}
+.welcome{font-family:'Fraunces',serif;font-size:28px;font-weight:900;margin-bottom:6px}
+.welcome em{color:#00e676;font-style:italic}
+.sub{color:#666;margin-bottom:28px;font-size:14px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:18px}
+.stat-label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.stat-value{font-family:'Fraunces',serif;font-size:28px;font-weight:900;line-height:1}
+.stat-value.green{color:#00e676}
+.stat-sub{font-size:12px;color:#666;margin-top:4px}
+.card{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:22px;margin-bottom:16px}
+.card-title{font-family:'Fraunces',serif;font-size:16px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.link-box{background:#0a0a0a;border:1px solid #1f1f1f;border-radius:10px;padding:12px;font-family:monospace;font-size:11px;word-break:break-all;color:#00e676;margin-bottom:10px}
+.btn{background:#00e676;color:#0a0a0a;border:none;padding:10px 18px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;width:100%;transition:opacity .2s}
+.btn:hover{opacity:.88}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn-gold{background:#f5c842;color:#0a0a0a}
+.btn-ghost{background:transparent;color:#f2efe8;border:1px solid #1f1f1f}
+.review-item{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #1f1f1f}
+.review-item:last-child{border:none}
+.review-avatar{width:36px;height:36px;border-radius:10px;background:#1f1f1f;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.review-meta{flex:1;min-width:0}
+.review-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:3px;flex-wrap:wrap;gap:4px}
+.review-stars{font-size:13px}
+.review-time{font-size:11px;color:#666}
+.review-text{font-size:12px;color:#aaa;line-height:1.5;margin-top:4px}
+.review-tag{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 7px;border-radius:20px;margin-top:5px;font-weight:500}
+.tag-google{background:rgba(0,230,118,.1);color:#00e676}
+.tag-internal{background:rgba(239,68,68,.1);color:#ef4444}
+.empty{text-align:center;padding:40px 20px;color:#666;font-size:14px}
+.loading{text-align:center;padding:40px;color:#666}
+.info-row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #1f1f1f;font-size:13px}
+.info-row:last-child{border:none}
+.info-row .label{color:#666}
+.info-row .val{font-weight:500}
+.lot-box{background:linear-gradient(135deg,rgba(245,200,66,.08),rgba(255,107,53,.04));border:1px solid rgba(245,200,66,.2);border-radius:12px;padding:18px;margin-bottom:14px}
+.lot-input{width:100%;background:#0a0a0a;border:1.5px solid #1f1f1f;border-radius:10px;padding:12px;color:#f2efe8;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:10px}
+.lot-input:focus{border-color:#f5c842}
+.lot-stats{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid rgba(245,200,66,.15)}
+.lot-count{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:#f5c842}
+.winner-box{background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.3);border-radius:12px;padding:18px;margin-top:14px;text-align:center}
+.winner-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:#00e676;margin-bottom:8px}
+.winner-phone{font-family:monospace;font-size:20px;font-weight:700;margin-bottom:6px}
+.winner-date{font-size:12px;color:#666}
+.qr-section{text-align:center;padding:20px;background:#fff;border-radius:12px;margin-bottom:14px}
+#qrcode{display:inline-block}
+.tabs{display:flex;gap:4px;background:#0a0a0a;border-radius:10px;padding:4px;margin-bottom:18px}
+.tab{flex:1;padding:10px;text-align:center;font-size:13px;color:#666;cursor:pointer;border-radius:8px;transition:all .2s}
+.tab.active{background:#1f1f1f;color:#f2efe8;font-weight:500}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.phone-input{width:100%;background:#0a0a0a;border:1.5px solid #1f1f1f;border-radius:10px;padding:12px;color:#f2efe8;font-family:'DM Sans',sans-serif;font-size:14px;outline:none;margin-bottom:10px}
+.phone-input:focus{border-color:#00e676}
+.sms-preview{background:#0a0a0a;border:1px solid #1f1f1f;border-radius:10px;padding:14px;font-size:13px;color:#aaa;line-height:1.6;margin-bottom:14px;font-style:italic}
+@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">Reviewo<span>.</span></div>
+    <button class="logout" onclick="logout()">Déconnexion</button>
+  </div>
+  <div id="content" class="loading">Chargement...</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+const SUPABASE_URL = 'https://xivfhmivalfcnbkvxwbm.supabase.co'
+const SUPABASE_KEY = 'sb_publishable_Czi3OLTboQSGmP2nA0NBUQ_koXPrn5x'
+const supabase = createClient(SUPABASE_URL, SUPABASE_KEY)
+
+let commerce = null
+let avis = []
+
+async function load() {
+  const { data: { session } } = await supabase.auth.getSession()
+  if (!session) { window.location.href = '/inscription.html'; return }
+
+  const { data: c } = await supabase.from('commerces').select('*').eq('user_id', session.user.id).single()
+  if (!c) { document.getElementById('content').innerHTML = '<p style="color:#ef4444">Commerce introuvable</p>'; return }
+  commerce = c
+
+  const { data: a } = await supabase.from('avis').select('*').eq('commerce_id', c.id).order('created_at', { ascending: false })
+  avis = a || []
+
+  render()
+}
+
+async function render() {
+  const total = avis.length
+  const googleCount = avis.filter(a => a.redirige_google).length
+  const avgNote = total > 0 ? (avis.reduce((s,a) => s+a.note, 0) / total).toFixed(1) : '—'
+  const redirectRate = total > 0 ? Math.round((googleCount / total) * 100) : 0
+
+  const voteLink = `${window.location.origin}/vote.html?c=${commerce.id}`
+  const currentMonth = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
+
+  const eligibles = avis.filter(a => a.redirige_google && a.telephone)
+  const { data: tirages } = await supabase.from('tirages').select('*').eq('commerce_id', commerce.id).order('created_at', { ascending: false })
+  const lastTirage = tirages?.[0]
+
+  document.getElementById('content').innerHTML = `
+    <h1 class="welcome">Bienvenue, <em>${commerce.nom}</em></h1>
+    <p class="sub">Tableau de bord · ${currentMonth}</p>
+
+    <div class="stats-grid">
+      <div class="stat"><div class="stat-label">Avis collectés</div><div class="stat-value">${total}</div><div class="stat-sub">Depuis le début</div></div>
+      <div class="stat"><div class="stat-label">Redirigés Google</div><div class="stat-value green">${googleCount}</div><div class="stat-sub">${redirectRate}% de taux</div></div>
+      <div class="stat"><div class="stat-label">Note moyenne</div><div class="stat-value">${avgNote}${total > 0 ? ' ⭐' : ''}</div><div class="stat-sub">Sur 5</div></div>
+      <div class="stat"><div class="stat-label">Plan actif</div><div class="stat-value green" style="font-size:22px">${commerce.plan}</div><div class="stat-sub">Actif</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">📲 Comment collecter des avis ?</div>
+      <div class="tabs">
+        <div class="tab active" onclick="switchTab('qr')">📱 QR Code</div>
+        <div class="tab" onclick="switchTab('sms')">💬 Envoyer un SMS</div>
+        <div class="tab" onclick="switchTab('link')">🔗 Lien</div>
+      </div>
+
+      <div class="tab-content active" id="tab-qr">
+        <p style="font-size:13px;color:#666;margin-bottom:14px">Imprimez et collez ce QR code à la caisse, sur les tables, les tickets... Vos clients scannent et laissent un avis en 30 secondes.</p>
+        <div class="qr-section"><div id="qrcode"></div></div>
+        <button class="btn" onclick="downloadQR()">📥 Télécharger le QR code</button>
+      </div>
+
+      <div class="tab-content" id="tab-sms">
+        <p style="font-size:13px;color:#666;margin-bottom:14px">Après la visite d'un client, envoyez-lui ce SMS depuis votre téléphone :</p>
+        <div class="sms-preview">
+          "Bonjour 👋 Merci de votre visite chez ${commerce.nom} ! Donnez-nous votre avis en 30 secondes et tentez de gagner ${commerce.lot || 'un cadeau'} : ${voteLink}"
+        </div>
+        <label style="font-size:12px;color:#666;display:block;margin-bottom:6px">Numéro du client</label>
+        <input type="tel" class="phone-input" id="sms-phone" placeholder="06 12 34 56 78">
+        <button class="btn" onclick="sendSMS()">📤 Envoyer le SMS</button>
+      </div>
+
+      <div class="tab-content" id="tab-link">
+        <p style="font-size:13px;color:#666;margin-bottom:10px">Partagez ce lien par email, WhatsApp, réseaux sociaux...</p>
+        <div class="link-box">${voteLink}</div>
+        <button class="btn" onclick="copyLink('${voteLink}')">📋 Copier le lien</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🎁 Tirage au sort mensuel</div>
+      <div class="lot-box">
+        <label style="font-size:12px;color:#666;display:block;margin-bottom:6px">Lot à faire gagner</label>
+        <input type="text" class="lot-input" id="lot-input" value="${commerce.lot || ''}" placeholder="Ex: Bon d'achat 50€">
+        <button class="btn btn-ghost" style="width:auto;padding:8px 14px;font-size:12px" onclick="saveLot()">💾 Enregistrer le lot</button>
+        <div class="lot-stats">
+          <span style="font-size:13px;color:#888">Participants éligibles</span>
+          <span class="lot-count">${eligibles.length}</span>
+        </div>
+      </div>
+      <button class="btn btn-gold" onclick="doTirage()" ${eligibles.length === 0 ? 'disabled' : ''}>
+        🎲 ${eligibles.length === 0 ? 'Aucun participant' : 'Lancer le tirage au sort'}
+      </button>
+      ${lastTirage ? `
+        <div class="winner-box">
+          <div class="winner-title">🏆 Dernier gagnant</div>
+          <div class="winner-phone">${lastTirage.telephone_gagnant}</div>
+          <div class="winner-date">Lot : ${lastTirage.lot} · ${new Date(lastTirage.created_at).toLocaleDateString('fr-FR')}</div>
+        </div>
+      ` : ''}
+    </div>
+
+    <div class="card">
+      <div class="card-title">⭐ Avis récents</div>
+      ${total === 0 ? '<div class="empty">Aucun avis pour le moment.<br>Partagez votre lien pour commencer !</div>' :
+        avis.slice(0, 10).map(a => {
+          const stars = '⭐'.repeat(a.note) + '☆'.repeat(5 - a.note)
+          const date = new Date(a.created_at).toLocaleDateString('fr-FR', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'})
+          return `
+            <div class="review-item">
+              <div class="review-avatar">${a.note >= 4 ? '😊' : a.note >= 3 ? '😐' : '😞'}</div>
+              <div class="review-meta">
+                <div class="review-top"><span class="review-stars">${stars}</span><span class="review-time">${date}</span></div>
+                ${a.commentaire ? `<div class="review-text">"${a.commentaire}"</div>` : ''}
+                ${a.problemes && a.problemes.length > 0 ? `<div class="review-text" style="color:#666">Problèmes : ${a.problemes.join(', ')}</div>` : ''}
+                <span class="review-tag ${a.redirige_google ? 'tag-google' : 'tag-internal'}">${a.redirige_google ? '✓ Envoyé vers Google' : '⚠ Avis interne'}</span>
+              </div>
+            </div>
+          `
+        }).join('')
+      }
+    </div>
+
+    <div class="card">
+      <div class="card-title">📋 Informations</div>
+      <div class="info-row"><span class="label">Nom</span><span class="val">${commerce.nom}</span></div>
+      <div class="info-row"><span class="label">Email</span><span class="val">${commerce.email}</span></div>
+      <div class="info-row"><span class="label">Lien Google</span><span class="val" style="font-size:11px">${commerce.lien_google || 'Non configuré'}</span></div>
+    </div>
+  `
+
+  // Génère le QR code
+  QRCode.toCanvas(document.getElementById('qrcode'), voteLink, { width: 220, margin: 2, color: { dark: '#0a0a0a', light: '#ffffff' } })
+}
+
+window.switchTab = function(tab) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'))
+  event.target.classList.add('active')
+  document.getElementById('tab-' + tab).classList.add('active')
+}
+
+window.sendSMS = function() {
+  const phone = document.getElementById('sms-phone').value.trim().replace(/\s/g, '')
+  if (!phone) return alert('Entrez un numéro')
+  const voteLink = `${window.location.origin}/vote.html?c=${commerce.id}`
+  const message = `Bonjour 👋 Merci de votre visite chez ${commerce.nom} ! Donnez-nous votre avis en 30 secondes et tentez de gagner ${commerce.lot || 'un cadeau'} : ${voteLink}`
+  window.location.href = `sms:${phone}?body=${encodeURIComponent(message)}`
+}
+
+window.downloadQR = function() {
+  const canvas = document.querySelector('#qrcode canvas')
+  if (!canvas) return
+  const link = document.createElement('a')
+  link.download = `reviewo-qrcode-${commerce.nom.replace(/\s/g,'-')}.png`
+  link.href = canvas.toDataURL()
+  link.click()
+}
+
+window.saveLot = async function() {
+  const newLot = document.getElementById('lot-input').value.trim()
+  if (!newLot) return alert('Veuillez saisir un lot')
+  const { error } = await supabase.from('commerces').update({ lot: newLot }).eq('id', commerce.id)
+  if (error) return alert('Erreur lors de l\'enregistrement')
+  commerce.lot = newLot
+  alert('Lot enregistré !')
+}
+
+window.doTirage = async function() {
+  const eligibles = avis.filter(a => a.redirige_google && a.telephone)
+  if (eligibles.length === 0) return alert('Aucun participant éligible')
+  if (!confirm(`Lancer le tirage parmi ${eligibles.length} participant(s) ?`)) return
+
+  const winner = eligibles[Math.floor(Math.random() * eligibles.length)]
+  const mois = new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })
+
+  const { error } = await supabase.from('tirages').insert({
+    commerce_id: commerce.id,
+    avis_id: winner.id,
+    lot: commerce.lot || 'Lot',
+    telephone_gagnant: winner.telephone,
+    mois: mois
+  })
+  if (error) return alert('Erreur lors du tirage')
+
+  alert(`🎉 Gagnant tiré au sort !\n\nNuméro : ${winner.telephone}\nLot : ${commerce.lot}`)
+  load()
+}
+
+window.logout = async function() {
+  await supabase.auth.signOut()
+  window.location.href = '/inscription.html'
+}
+
+window.copyLink = function(link) {
+  navigator.clipboard.writeText(link)
+  alert('Lien copié !')
+}
+
+load()
+</script>
+</body>
+</html>
