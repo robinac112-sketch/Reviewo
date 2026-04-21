@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewo - Multipliez vos avis Google par 3</title>
+<meta name="description" content="Reviewo filtre intelligemment vos avis : les clients satisfaits vont sur Google, les mécontents dans un questionnaire privé. Essai 7 jours gratuit.">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;line-height:1.6;overflow-x:hidden}
+
+/* Navbar */
+.navbar{position:sticky;top:0;z-index:100;background:rgba(10,10,10,.85);backdrop-filter:blur(20px);border-bottom:1px solid #1f1f1f}
+.navbar-inner{max-width:1200px;margin:0 auto;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'Fraunces',serif;font-size:24px;font-weight:900;text-decoration:none;color:#f2efe8}
+.logo span{color:#00e676}
+.nav-links{display:flex;gap:8px;align-items:center}
+.nav-btn{padding:9px 18px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;transition:all .2s;font-family:'DM Sans',sans-serif;border:none;cursor:pointer}
+.nav-btn.ghost{color:#f2efe8;background:transparent}
+.nav-btn.ghost:hover{background:#1f1f1f}
+.nav-btn.primary{background:#00e676;color:#0a0a0a}
+.nav-btn.primary:hover{opacity:.9}
+
+/* Hero */
+.hero{padding:80px 24px 100px;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:800px;height:500px;background:radial-gradient(ellipse,rgba(0,230,118,.15),transparent 70%);z-index:0;pointer-events:none}
+.hero-inner{max-width:900px;margin:0 auto;position:relative;z-index:1}
+.hero-badge{display:inline-block;background:rgba(0,230,118,.1);border:1px solid rgba(0,230,118,.3);color:#00e676;padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;margin-bottom:24px;letter-spacing:1px}
+.hero h1{font-family:'Fraunces',serif;font-size:64px;font-weight:900;line-height:1.05;margin-bottom:24px;letter-spacing:-2px}
+.hero h1 em{color:#00e676;font-style:italic}
+.hero-sub{color:#aaa;font-size:19px;max-width:600px;margin:0 auto 36px;line-height:1.6}
+.hero-ctas{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:50px}
+.btn-primary{background:#00e676;color:#0a0a0a;padding:16px 32px;border-radius:12px;font-weight:700;text-decoration:none;font-size:16px;display:inline-block;transition:transform .2s}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-secondary{background:transparent;color:#f2efe8;border:1px solid #1f1f1f;padding:16px 32px;border-radius:12px;font-weight:600;text-decoration:none;font-size:16px;display:inline-block;transition:all .2s}
+.btn-secondary:hover{border-color:#00e676;color:#00e676}
+.trust-row{display:flex;justify-content:center;gap:24px;font-size:13px;color:#666;flex-wrap:wrap}
+.trust-item{display:flex;align-items:center;gap:6px}
+.trust-item::before{content:'✓';color:#00e676;font-weight:700}
+
+/* Stats */
+.stats-section{padding:60px 24px;border-top:1px solid #1f1f1f;border-bottom:1px solid #1f1f1f;background:#0d0d0d}
+.stats-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:30px;text-align:center}
+.stat-big{font-family:'Fraunces',serif;font-size:56px;font-weight:900;color:#00e676;line-height:1;margin-bottom:8px}
+.stat-lbl{color:#888;font-size:14px;text-transform:uppercase;letter-spacing:2px}
+
+/* Sections communes */
+.section{padding:80px 24px}
+.section-inner{max-width:1100px;margin:0 auto}
+.section-tag{display:block;color:#00e676;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:3px;margin-bottom:12px;text-align:center}
+.section-title{font-family:'Fraunces',serif;font-size:44px;font-weight:900;text-align:center;margin-bottom:16px;line-height:1.1;letter-spacing:-1px}
+.section-sub{text-align:center;color:#888;font-size:17px;max-width:600px;margin:0 auto 50px;line-height:1.6}
+
+/* Comment ça marche */
+.steps-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.step-card{background:#131313;border:1px solid #1f1f1f;border-radius:20px;padding:32px 24px;text-align:center;transition:all .3s;position:relative}
+.step-card:hover{border-color:#00e676;transform:translateY(-4px)}
+.step-number{position:absolute;top:-20px;left:50%;transform:translateX(-50%);background:#00e676;color:#0a0a0a;width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;font-size:20px;box-shadow:0 0 30px rgba(0,230,118,.4)}
+.step-icon{font-size:56px;margin:20px 0 20px;display:block}
+.step-title{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-bottom:12px}
+.step-desc{color:#aaa;font-size:14px;line-height:1.6}
+
+/* Features */
+.features-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px}
+.feature-card{background:#131313;border:1px solid #1f1f1f;border-radius:16px;padding:24px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s}
+.feature-card:hover{border-color:#00e676}
+.feature-icon{font-size:32px;flex-shrink:0}
+.feature-title{font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:6px}
+.feature-desc{color:#aaa;font-size:13px;line-height:1.6}
+
+/* Pricing */
+.pricing-section{background:linear-gradient(180deg,transparent,rgba(0,230,118,.03))}
+.pricing-card{max-width:460px;margin:0 auto;background:#131313;border:2px solid #00e676;border-radius:24px;padding:40px 32px;text-align:center;position:relative;box-shadow:0 20px 60px rgba(0,230,118,.15)}
+.pricing-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:#00e676;color:#0a0a0a;padding:6px 18px;border-radius:20px;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.pricing-title{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin-bottom:16px;margin-top:10px}
+.price-wrap{display:flex;align-items:baseline;justify-content:center;gap:6px;margin-bottom:8px}
+.price-num{font-family:'Fraunces',serif;font-size:72px;font-weight:900;color:#00e676;line-height:1}
+.price-unit{color:#888;font-size:16px}
+.price-trial{color:#f5c842;font-size:14px;font-weight:600;margin-bottom:24px}
+.pricing-features{text-align:left;margin:24px 0;padding:0;list-style:none}
+.pricing-features li{padding:10px 0;border-bottom:1px solid #1f1f1f;color:#ccc;font-size:14px;display:flex;gap:10px;align-items:center}
+.pricing-features li:last-child{border:none}
+.pricing-features li::before{content:'✓';color:#00e676;font-weight:700;font-size:16px;flex-shrink:0}
+
+/* FAQ */
+.faq-item{background:#131313;border:1px solid #1f1f1f;border-radius:12px;padding:18px 22px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+.faq-item:hover{border-color:#00e676}
+.faq-q{font-weight:700;color:#f2efe8;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-q-icon{color:#00e676;font-size:20px;transition:transform .2s;flex-shrink:0}
+.faq-item.open .faq-q-icon{transform:rotate(45deg)}
+.faq-a{color:#aaa;font-size:14px;line-height:1.7;margin-top:12px;display:none}
+.faq-item.open .faq-a{display:block}
+
+/* Final CTA */
+.final-cta{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(245,200,66,.04));border:1px solid rgba(0,230,118,.2);border-radius:24px;padding:50px 32px;text-align:center;max-width:900px;margin:0 auto}
+.final-cta h2{font-family:'Fraunces',serif;font-size:36px;font-weight:900;margin-bottom:16px;line-height:1.2}
+.final-cta p{color:#aaa;margin-bottom:28px;font-size:16px}
+
+/* Footer */
+.footer{border-top:1px solid #1f1f1f;padding:40px 24px 30px;margin-top:60px}
+.footer-inner{max-width:1100px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:30px;margin-bottom:30px}
+.footer-brand{font-family:'Fraunces',serif;font-size:22px;font-weight:900;margin-bottom:10px}
+.footer-brand span{color:#00e676}
+.footer-desc{color:#888;font-size:13px;max-width:300px;line-height:1.6}
+.footer-col h4{font-size:12px;color:#888;text-transform:uppercase;letter-spacing:2px;margin-bottom:14px;font-weight:700}
+.footer-col a{display:block;color:#ccc;text-decoration:none;font-size:14px;padding:4px 0;transition:color .2s}
+.footer-col a:hover{color:#00e676}
+.footer-bottom{border-top:1px solid #1f1f1f;padding-top:20px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;color:#666;font-size:12px}
+
+@media(max-width:768px){
+.hero{padding:60px 20px 60px}
+.hero h1{font-size:38px}
+.hero-sub{font-size:16px}
+.section{padding:60px 20px}
+.section-title{font-size:32px}
+.stats-inner{grid-template-columns:1fr;gap:30px}
+.stat-big{font-size:42px}
+.steps-grid{grid-template-columns:1fr}
+.features-grid{grid-template-columns:1fr}
+.footer-top{grid-template-columns:1fr;gap:20px}
+.price-num{font-size:56px}
+.final-cta h2{font-size:28px}
+.nav-btn.ghost{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+<div class="navbar-inner">
+<a href="/" class="logo">Reviewo<span>.</span></a>
+<div class="nav-links">
+<a href="#fonctionnement" class="nav-btn ghost">Fonctionnement</a>
+<a href="#tarifs" class="nav-btn ghost">Tarifs</a>
+<a href="/inscription.html" class="nav-btn ghost">Connexion</a>
+<a href="/inscription.html" class="nav-btn primary">Essai gratuit</a>
+</div>
+</div>
+</nav>
+
+<section class="hero">
+<div class="hero-inner">
+<div class="hero-badge">🎯 Multipliez vos avis Google</div>
+<h1>Transformez vos clients en <em>ambassadeurs</em></h1>
+<p class="hero-sub">Les avis satisfaits vont sur Google. Les critiques restent privées. Votre réputation en ligne explose, votre trafic aussi.</p>
+<div class="hero-ctas">
+<a href="/inscription.html" class="btn-primary">🚀 Démarrer l'essai gratuit</a>
+<a href="#fonctionnement" class="btn-secondary">Voir comment ça marche</a>
+</div>
+<div class="trust-row">
+<div class="trust-item">7 jours gratuits</div>
+<div class="trust-item">Sans engagement</div>
+<div class="trust-item">Installation en 3 min</div>
+</div>
+</div>
+</section>
+
+<section class="stats-section">
+<div class="stats-inner">
+<div>
+<div class="stat-big">+340%</div>
+<div class="stat-lbl">D'avis Google en moyenne</div>
+</div>
+<div>
+<div class="stat-big">69%</div>
+<div class="stat-lbl">Des clients lisent les avis</div>
+</div>
+<div>
+<div class="stat-big">30s</div>
+<div class="stat-lbl">Pour laisser un avis</div>
+</div>
+</div>
+</section>
+
+<section class="section" id="fonctionnement">
+<div class="section-inner">
+<span class="section-tag">⚡ Comment ça marche</span>
+<h2 class="section-title">3 étapes pour révolutionner vos avis</h2>
+<p class="section-sub">Un système intelligent qui protège votre réputation et valorise vos meilleurs clients</p>
+
+<div class="steps-grid">
+<div class="step-card">
+<div class="step-number">1</div>
+<div class="step-icon">📱</div>
+<h3 class="step-title">Le client scanne</h3>
+<p class="step-desc">Vos clients scannent un QR code sur votre affiche ou carte de table. Aucune application à télécharger.</p>
+</div>
+<div class="step-card">
+<div class="step-number">2</div>
+<div class="step-icon">⭐</div>
+<h3 class="step-title">Il donne sa note</h3>
+<p class="step-desc">De 1 à 5 étoiles en 10 secondes. Simple, rapide, efficace.</p>
+</div>
+<div class="step-card">
+<div class="step-number">3</div>
+<div class="step-icon">🎯</div>
+<h3 class="step-title">Le filtrage opère</h3>
+<p class="step-desc">4-5⭐ : redirigé vers Google. 1-3⭐ : questionnaire interne privé. Votre réputation protégée.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section" style="background:#0d0d0d;border-top:1px solid #1f1f1f;border-bottom:1px solid #1f1f1f">
+<div class="section-inner">
+<span class="section-tag">✨ Fonctionnalités</span>
+<h2 class="section-title">Tout ce qu'il vous faut</h2>
+<p class="section-sub">Un outil pensé par et pour les commerçants</p>
+
+<div class="features-grid">
+<div class="feature-card">
+<div class="feature-icon">🎨</div>
+<div>
+<div class="feature-title">Affiches personnalisées</div>
+<div class="feature-desc">Formats A4 et carte de table téléchargeables au nom de votre commerce, prêtes à imprimer.</div>
+</div>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🎁</div>
+<div>
+<div class="feature-title">Tirage au sort mensuel</div>
+<div class="feature-desc">Motivez vos clients à laisser un avis avec un lot au choix. Tirage automatique et transparent.</div>
+</div>
+</div>
+<div class="feature-card">
+<div class="feature-icon">📊</div>
+<div>
+<div class="feature-title">Dashboard complet</div>
+<div class="feature-desc">Statistiques en temps réel, historique des avis, taux de redirection Google.</div>
+</div>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🔒</div>
+<div>
+<div class="feature-title">100% RGPD</div>
+<div class="feature-desc">Consentements explicites, données sécurisées, conformité totale avec la réglementation.</div>
+</div>
+</div>
+<div class="feature-card">
+<div class="feature-icon">💬</div>
+<div>
+<div class="feature-title">Avis internes privés</div>
+<div class="feature-desc">Les critiques négatives restent entre vous et le client. Vous améliorez sans impact sur Google.</div>
+</div>
+</div>
+<div class="feature-card">
+<div class="feature-icon">🎉</div>
+<div>
+<div class="feature-title">Programme de parrainage</div>
+<div class="feature-desc">Invitez d'autres commerçants : -30% pour vous pendant 2 mois, -10% pour eux au démarrage.</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="section pricing-section" id="tarifs">
+<div class="section-inner">
+<span class="section-tag">💎 Tarifs</span>
+<h2 class="section-title">Un prix simple, zéro surprise</h2>
+<p class="section-sub">Tout inclus. Annulation à tout moment.</p>
+
+<div class="pricing-card">
+<div class="pricing-badge">✨ Essai 7 jours offerts</div>
+<div class="pricing-title">Abonnement Reviewo</div>
+<div class="price-wrap">
+<span class="price-num">29€</span>
+<span class="price-unit">/mois</span>
+</div>
+<div class="price-trial">7 jours gratuits, sans engagement</div>
+<ul class="pricing-features">
+<li>Affiches A4 + cartes de table illimitées</li>
+<li>QR code personnalisé</li>
+<li>Avis Google illimités</li>
+<li>Questionnaire interne privé</li>
+<li>Tirage au sort mensuel</li>
+<li>Dashboard avec statistiques</li>
+<li>Programme de parrainage (-30%)</li>
+<li>Support par email sous 48h</li>
+<li>Annulation à tout moment</li>
+</ul>
+<a href="/inscription.html" class="btn-primary" style="width:100%;text-align:center">🚀 Démarrer maintenant</a>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-inner" style="max-width:760px">
+<span class="section-tag">❓ Questions fréquentes</span>
+<h2 class="section-title">Vous avez des questions ?</h2>
+<p class="section-sub">On a les réponses</p>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Est-ce légal de filtrer les avis comme ça ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Oui, 100% légal. Reviewo ne falsifie aucun avis. Nous proposons simplement le bon canal à chaque client : Google pour les satisfaits, questionnaire privé pour les mécontents. Rien n'empêche un client mécontent d'aller sur Google s'il le souhaite.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Qui paie le lot du tirage au sort ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">C'est vous. C'est pourquoi il est conseillé d'offrir un <strong>bon d'achat dans votre propre commerce</strong> : ça vous coûte moins cher ET ça fait revenir le client chez vous !</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Dois-je installer une application ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Non. Reviewo fonctionne 100% dans votre navigateur. Vos clients non plus n'ont rien à télécharger : ils scannent le QR code avec leur appareil photo, c'est tout.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Quand serai-je prélevé ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Votre carte est enregistrée à l'inscription mais <strong>aucun prélèvement n'est fait pendant 7 jours</strong>. Après, vous êtes prélevé de 29€ par mois. Annulable à tout moment depuis votre dashboard.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Comment annuler mon abonnement ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">En 2 clics depuis votre tableau de bord (onglet Profil → Zone dangereuse → Annuler). Votre accès reste actif jusqu'à la fin de la période en cours.</div>
+</div>
+
+<div style="text-align:center;margin-top:30px">
+<a href="/contact.html" class="btn-secondary">Voir toutes les questions →</a>
+</div>
+</div>
+</section>
+
+<section class="section">
+<div class="section-inner">
+<div class="final-cta">
+<h2>Prêt à transformer votre <em style="color:#00e676;font-style:italic">réputation en ligne</em> ?</h2>
+<p>Rejoignez les commerçants qui multiplient leurs avis Google avec Reviewo</p>
+<a href="/inscription.html" class="btn-primary">🚀 Démarrer l'essai gratuit de 7 jours</a>
+<div style="margin-top:16px;font-size:13px;color:#666">Sans engagement · Annulable à tout moment · Installation en 3 minutes</div>
+</div>
+</div>
+</section>
+
+<footer class="footer">
+<div class="footer-inner">
+<div class="footer-top">
+<div>
+<div class="footer-brand">Reviewo<span>.</span></div>
+<p class="footer-desc">La solution intelligente pour multiplier vos avis Google et protéger votre réputation.</p>
+</div>
+<div class="footer-col">
+<h4>Produit</h4>
+<a href="#fonctionnement">Fonctionnement</a>
+<a href="#tarifs">Tarifs</a>
+<a href="/guide.html">Guide d'utilisation</a>
+<a href="/inscription.html">Essai gratuit</a>
+</div>
+<div class="footer-col">
+<h4>Entreprise</h4>
+<a href="/contact.html">Contact & FAQ</a>
+<a href="/cgu.html">CGU / CGV</a>
+<a href="/confidentialite.html">Confidentialité</a>
+</div>
+</div>
+<div class="footer-bottom">
+<div>Reviewo © 2026 · Tous droits réservés</div>
+<div>Propulsé avec ❤️ en France</div>
+</div>
+</div>
+</footer>
+
+</body>
+</html>
