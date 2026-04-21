@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewo - Inscription / Connexion</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+.container{max-width:460px;width:100%;background:#131313;border:1px solid #1f1f1f;border-radius:20px;padding:32px 24px}
+.logo{font-family:'Fraunces',serif;font-size:28px;font-weight:900;text-align:center;margin-bottom:6px}
+.logo span{color:#00e676}
+.tagline{text-align:center;color:#666;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px}
+.tabs{display:flex;gap:6px;margin-bottom:24px;background:#0a0a0a;padding:4px;border-radius:10px}
+.tab{flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:#888;font-family:'DM Sans',sans-serif}
+.tab.active{background:#00e676;color:#0a0a0a}
+.title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;margin-bottom:8px;text-align:center}
+.sub{color:#888;font-size:13px;text-align:center;margin-bottom:20px}
+.input{width:100%;background:#0a0a0a;border:1.5px solid #1f1f1f;border-radius:10px;padding:13px;color:#f2efe8;font-size:14px;outline:none;margin-bottom:10px;font-family:'DM Sans',sans-serif}
+.input:focus{border-color:#00e676}
+.input-label{font-size:12px;color:#888;display:block;margin-bottom:4px;margin-top:8px}
+.btn{background:#00e676;color:#0a0a0a;border:none;padding:14px 20px;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;width:100%;margin-top:14px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.screen{display:none}
+.screen.active{display:block}
+.info-box{background:rgba(0,230,118,.06);border:1px solid rgba(0,230,118,.2);border-radius:10px;padding:12px;font-size:12px;color:#aaa;line-height:1.5;margin-bottom:16px}
+.info-box strong{color:#00e676}
+.parrain-banner{background:linear-gradient(135deg,rgba(245,200,66,.1),rgba(255,107,53,.05));border:1px solid rgba(245,200,66,.3);border-radius:10px;padding:12px;font-size:12px;color:#f5c842;text-align:center;margin-bottom:14px;font-weight:600}
+.error{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);color:#ef4444;padding:12px;border-radius:10px;font-size:13px;margin-top:10px;display:none}
+.loading{text-align:center;padding:40px;color:#666}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="logo">Reviewo<span>.</span></div>
+<div class="tagline">Votre avis compte</div>
+
+<div class="tabs">
+<button class="tab active" id="tab-signup" onclick="showTab('signup')">Inscription</button>
+<button class="tab" id="tab-login" onclick="showTab('login')">Connexion</button>
+</div>
+
+<div id="signup-screen" class="screen active">
+<div class="title">Créez votre compte</div>
+<div class="sub">7 jours d'essai gratuit, puis 29€/mois</div>
+
+<div id="parrain-banner-display" style="display:none" class="parrain-banner">🎁 Code de parrainage détecté : <strong id="parrain-code-display"></strong></div>
+
+<div class="info-box">Votre carte bancaire sera demandée mais <strong>aucun prélèvement ne sera fait pendant 7 jours</strong>. Vous pouvez annuler à tout moment.</div>
+
+<label class="input-label">Nom du commerce</label>
+<input type="text" class="input" id="su-nom" placeholder="Ex: Pizza Marco">
+
+<label class="input-label">Email</label>
+<input type="email" class="input" id="su-email" placeholder="contact@moncommerce.fr">
+
+<label class="input-label">Téléphone</label>
+<input type="tel" class="input" id="su-tel" placeholder="06 12 34 56 78">
+
+<label class="input-label">Lien Google (pour les avis)</label>
+<input type="url" class="input" id="su-google" placeholder="https://g.page/...">
+
+<label class="input-label">Mot de passe (min 6 caractères)</label>
+<input type="password" class="input" id="su-pwd" placeholder="••••••••">
+
+<label class="input-label">Code de parrainage (optionnel)</label>
+<input type="text" class="input" id="su-parrain" placeholder="Ex: ABCD1234" style="text-transform:uppercase">
+
+<button class="btn" id="su-btn" onclick="signup()">Créer mon compte et continuer</button>
+<div class="error" id="su-error"></div>
+</div>
+
+<div id="login-screen" class="screen">
+<div class="title">Connexion</div>
+<div class="sub">Accédez à votre tableau de bord</div>
+
+<label class="input-label">Email</label>
+<input type="email" class="input" id="li-email">
+
+<label class="input-label">Mot de passe</label>
+<input type="password" class="input" id="li-pwd">
+
+<button class="btn" id="li-btn" onclick="login()">Se connecter</button>
+<div class="error" id="li-error"></div>
+</div>
+</div>
+
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const supabase = createClient('https://xivfhmivalfcnbkvxwbm.supabase.co','sb_publishable_Czi3OLTboQSGmP2nA0NBUQ_koXPrn5x')
+const STRIPE_LINK='https://buy.stripe.com/test_6oU3cu4cLcb87Mu9o53Ru00'
+
+// Détecter si un code de parrainage est dans l URL (ex: /inscription.html?parrain=ABCD1234)
+const urlParams=new URLSearchParams(window.location.search)
+const parrainUrl=urlParams.get('parrain')
+if(parrainUrl){
+  document.getElementById('su-parrain').value=parrainUrl.toUpperCase()
+  document.getElementById('parrain-code-display').textContent=parrainUrl.toUpperCase()
+  document.getElementById('parrain-banner-display').style.display='block'
+}
+
+// Si déjà connecté, rediriger vers dashboard
+const {data:{session}}=await supabase.auth.getSession()
+if(session){window.location.href='/dashboard.html'}
+
+window.showTab=function(tab){
+  document.getElementById('signup-screen').classList.toggle('active',tab==='signup')
+  document.getElementById('login-screen').classList.toggle('active',tab==='login')
+  document.getElementById('tab-signup').classList.toggle('active',tab==='signup')
+  document.getElementById('tab-login').classList.toggle('active',tab==='login')
+}
+
+window.signup=async function(){
+  const nom=document.getElementById('su-nom').value.trim()
+  const email=document.getElementById('su-email').value.trim()
+  const tel=document.getElementById('su-tel').value.trim()
+  const google=document.getElementById('su-google').value.trim()
+  const pwd=document.getElementById('su-pwd').value
+  const parrainCode=document.getElementById('su-parrain').value.trim().toUpperCase()
+  const errBox=document.getElementById('su-error')
+  const btn=document.getElementById('su-btn')
+  errBox.style.display='none'
+  if(!nom||!email||!pwd){errBox.textContent='Nom, email et mot de passe obligatoires';errBox.style.display='block';return}
+  if(pwd.length<6){errBox.textContent='Mot de passe min 6 caractères';errBox.style.display='block';return}
+  btn.disabled=true
+  btn.textContent='Création du compte...'
+  // Vérifier le code de parrainage si fourni
+  let parrainId=null
+  if(parrainCode){
+    const {data:parrain}=await supabase.from('commerces').select('id').eq('code_parrainage',parrainCode).single()
+    if(!parrain){
+      btn.disabled=false
+      btn.textContent='Créer mon compte et continuer'
+      errBox.textContent='Code de parrainage invalide'
+      errBox.style.display='block'
+      return
+    }
+    parrainId=parrain.id
+  }
+  // Créer le compte auth
+  const {data:auth,error:authErr}=await supabase.auth.signUp({email:email,password:pwd})
+  if(authErr){
+    btn.disabled=false
+    btn.textContent='Créer mon compte et continuer'
+    errBox.textContent='Erreur: '+authErr.message
+    errBox.style.display='block'
+    return
+  }
+  // Créer le commerce (statut=pending, pas encore payé)
+  const {data:commerce,error:cErr}=await supabase.from('commerces').insert({
+    nom:nom,
+    email:email,
+    telephone:tel||null,
+    lien_google:google||null,
+    user_id:auth.user.id,
+    statut:'pending',
+    parraine_par:parrainId
+  }).select().single()
+  if(cErr){
+    btn.disabled=false
+    btn.textContent='Créer mon compte et continuer'
+    errBox.textContent='Erreur création commerce: '+cErr.message
+    errBox.style.display='block'
+    return
+  }
+  // Si parrainage, créer l entrée
+  if(parrainId){
+    await supabase.from('parrainages').insert({
+      parrain_id:parrainId,
+      filleul_id:commerce.id
+    })
+  }
+  // Rediriger vers Stripe (carte obligatoire + 7j essai)
+  btn.textContent='Redirection vers le paiement...'
+  window.location.href=STRIPE_LINK
+}
+
+window.login=async function(){
+  const email=document.getElementById('li-email').value.trim()
+  const pwd=document.getElementById('li-pwd').value
+  const errBox=document.getElementById('li-error')
+  const btn=document.getElementById('li-btn')
+  errBox.style.display='none'
+  if(!email||!pwd){errBox.textContent='Email et mot de passe obligatoires';errBox.style.display='block';return}
+  btn.disabled=true
+  btn.textContent='Connexion...'
+  const {error}=await supabase.auth.signInWithPassword({email:email,password:pwd})
+  if(error){
+    btn.disabled=false
+    btn.textContent='Se connecter'
+    errBox.textContent='Email ou mot de passe incorrect'
+    errBox.style.display='block'
+    return
+  }
+  window.location.href='/dashboard.html'
+}
+</script>
+</body>
+</html>
