@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact & FAQ - Reviewo</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;line-height:1.7;padding:20px}
+.container{max-width:760px;margin:0 auto;padding:40px 20px}
+.logo{font-family:'Fraunces',serif;font-size:28px;font-weight:900;text-align:center;margin-bottom:8px}
+.logo span{color:#00e676}
+.back{display:inline-block;color:#888;text-decoration:none;font-size:13px;margin-bottom:20px}
+.back:hover{color:#00e676}
+h1{font-family:'Fraunces',serif;font-size:40px;font-weight:900;margin-bottom:12px;line-height:1.1;text-align:center}
+h1 em{color:#00e676;font-style:italic}
+.hero-sub{color:#888;text-align:center;margin-bottom:40px;font-size:15px}
+h2{font-family:'Fraunces',serif;font-size:24px;font-weight:700;margin-top:40px;margin-bottom:16px;color:#00e676}
+p{color:#ccc;font-size:15px;margin-bottom:14px}
+strong{color:#f2efe8}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:30px}
+.contact-card{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:22px;text-align:center}
+.contact-icon{font-size:36px;margin-bottom:12px}
+.contact-card h3{font-family:'Fraunces',serif;font-size:17px;font-weight:700;margin-bottom:8px}
+.contact-card p{font-size:13px;color:#aaa;margin-bottom:12px;line-height:1.5}
+.contact-card a{display:inline-block;background:#00e676;color:#0a0a0a;text-decoration:none;padding:10px 18px;border-radius:8px;font-weight:700;font-size:13px}
+.contact-card a.ghost{background:transparent;border:1px solid #1f1f1f;color:#f2efe8}
+
+.faq-intro{background:rgba(0,230,118,.05);border:1px solid rgba(0,230,118,.2);border-radius:14px;padding:18px;margin-bottom:24px;text-align:center}
+.faq-intro p{margin:0;color:#e8e8e8;font-size:14px}
+
+.faq-item{background:#131313;border:1px solid #1f1f1f;border-radius:12px;padding:18px;margin-bottom:10px;cursor:pointer;transition:all .2s}
+.faq-item:hover{border-color:#00e676}
+.faq-q{font-weight:700;color:#00e676;font-size:15px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.faq-q-icon{color:#00e676;font-size:20px;transition:transform .2s;flex-shrink:0}
+.faq-item.open .faq-q-icon{transform:rotate(45deg)}
+.faq-a{color:#ccc;font-size:14px;line-height:1.7;margin-top:12px;display:none}
+.faq-item.open .faq-a{display:block}
+.faq-a strong{color:#f2efe8}
+
+.faq-category{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:#f5c842;margin-top:30px;margin-bottom:14px}
+
+.footer{text-align:center;padding:30px 0;border-top:1px solid #1f1f1f;margin-top:50px;color:#666;font-size:12px}
+@media(max-width:640px){.contact-grid{grid-template-columns:1fr}h1{font-size:30px}}
+</style>
+</head>
+<body>
+<div class="container">
+<a href="/" class="back">← Retour à l accueil</a>
+<div class="logo">Reviewo<span>.</span></div>
+
+<h1>Besoin d'<em>aide</em> ?</h1>
+<p class="hero-sub">On est là pour vous répondre</p>
+
+<h2>📬 Nous contacter</h2>
+
+<div class="contact-grid">
+<div class="contact-card">
+<div class="contact-icon">✉️</div>
+<h3>Email</h3>
+<p>Délai de réponse sous 48h ouvrées</p>
+<a href="mailto:contact@reviewo.app">Écrire un email</a>
+</div>
+
+<div class="contact-card">
+<div class="contact-icon">📖</div>
+<h3>Guide complet</h3>
+<p>Tout pour bien démarrer de A à Z</p>
+<a href="/guide.html" class="ghost">Lire le guide</a>
+</div>
+</div>
+
+<h2>💡 Questions fréquentes</h2>
+
+<div class="faq-intro">
+<p>👇 Cliquez sur une question pour voir la réponse</p>
+</div>
+
+<div class="faq-category">🚀 Démarrer avec Reviewo</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Comment ça marche concrètement ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Vous imprimez une affiche avec un QR code personnalisé. Vos clients le scannent, notent leur expérience de 1 à 5 étoiles. Les clients satisfaits (4-5⭐) sont redirigés vers Google pour laisser un avis public, les mécontents (1-3⭐) remplissent un questionnaire privé que vous seul voyez. Les clients qui ont laissé leur numéro peuvent gagner le lot que vous proposez chaque mois.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Combien ça coûte ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a"><strong>29€/mois</strong> avec <strong>7 jours d essai gratuit</strong>. Pas d engagement, vous pouvez annuler à tout moment depuis votre tableau de bord. Aucun prélèvement n est effectué pendant les 7 jours d essai.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Dois-je installer une application ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Non ! Reviewo fonctionne 100% dans votre navigateur web (ordinateur, tablette, téléphone). Vos clients non plus n ont rien à installer : ils scannent le QR code avec leur appareil photo et c est fini.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Quand mon QR code est-il actif ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Immédiatement après votre inscription et le paiement Stripe. Vous pouvez télécharger votre affiche A4 et votre carte de table dès que vous accédez à votre tableau de bord.</div>
+</div>
+
+<div class="faq-category">💳 Paiement et facturation</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Comment annuler mon abonnement ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Rendez-vous dans votre tableau de bord → onglet <strong>Profil</strong> → section <strong>Zone dangereuse</strong> → cliquez sur <strong>"Annuler mon abonnement"</strong>. Votre accès reste actif jusqu à la fin de la période en cours.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Puis-je récupérer mon argent après paiement ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Reviewo s adresse aux professionnels donc le droit de rétractation de 14 jours ne s applique pas légalement. Cependant, l essai de 7 jours vous permet de tester gratuitement avant tout prélèvement. En cas de problème, contactez-nous à contact@reviewo.app.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Quand serai-je prélevé ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Votre carte est enregistrée à l inscription mais <strong>aucun prélèvement n est fait pendant 7 jours</strong>. Après les 7 jours, vous êtes prélevé de 29€, puis chaque mois à la même date.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Est-ce que mes informations bancaires sont en sécurité ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Absolument. Les paiements sont gérés par <strong>Stripe</strong>, leader mondial du paiement en ligne, certifié <strong>PCI-DSS niveau 1</strong> (la plus haute norme de sécurité). Reviewo ne voit ni ne stocke jamais votre numéro de carte.</div>
+</div>
+
+<div class="faq-category">⭐ Avis et fonctionnalités</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Est-ce légal de filtrer les avis comme ça ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Oui, 100% légal. Reviewo ne falsifie aucun avis. Nous proposons simplement le bon canal à chaque client : Google public pour les satisfaits, questionnaire privé pour les mécontents. Les clients mécontents peuvent toujours aller sur Google s ils le veulent, rien ne les en empêche.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Qui paie le lot du tirage au sort ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">C est vous, le commerçant. C est pourquoi il est conseillé d offrir un <strong>bon d achat dans votre propre commerce</strong> : ça vous coûte moins cher ET ça fait revenir le client chez vous !</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Comment fonctionne le tirage au sort ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">À la fin du mois, vous cliquez sur <strong>"Lancer la roulette"</strong> dans votre tableau de bord. Notre système sélectionne <strong>aléatoirement</strong> un gagnant parmi tous les clients qui ont participé. Vous récupérez son numéro de téléphone et le contactez pour lui remettre son lot.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Puis-je changer le lot chaque mois ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Oui ! Et c est même <strong>conseillé</strong> pour maintenir l intérêt de vos clients. Rendez-vous dans l onglet <strong>Tirage</strong> de votre tableau de bord pour modifier le lot à tout moment.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Comment fonctionne le parrainage ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Chaque commerçant a un <strong>code de parrainage unique</strong>. Vous pouvez le partager à d autres commerçants. Quand ils s inscrivent et s abonnent :<br>✨ <strong>Vous gagnez -30%</strong> sur vos 2 prochains mois<br>🎁 <strong>Votre filleul gagne -10%</strong> sur son 1er mois<br><br>Retrouvez votre code dans l onglet <strong>Parrainage</strong> de votre dashboard.</div>
+</div>
+
+<div class="faq-category">🛡️ Données et RGPD</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Mes données sont-elles revendues ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a"><strong>Jamais.</strong> Reviewo ne revend aucune donnée, ni les vôtres, ni celles de vos clients. Nous utilisons des prestataires techniques sérieux (Supabase, Vercel, Stripe) pour faire fonctionner le service, c est tout. Plus de détails dans notre <a href="/confidentialite.html" style="color:#00e676">politique de confidentialité</a>.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Puis-je supprimer mon compte ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Oui, à tout moment. Rendez-vous dans <strong>Profil → Zone dangereuse → Supprimer mon compte</strong>. Toutes vos données (avis, statistiques, compte) seront définitivement supprimées. Cette action est <strong>irréversible</strong>.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Les clients peuvent-ils refuser de participer au tirage ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Oui. Lorsqu un client laisse 4 ou 5 étoiles, on lui propose de participer au tirage en donnant son numéro, mais il peut aussi cliquer sur <strong>"Passer le concours"</strong> et laisser directement son avis Google sans participer.</div>
+</div>
+
+<div class="faq-category">🔧 Problèmes techniques</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Mon QR code ne fonctionne pas, que faire ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Vérifiez d abord que votre abonnement est bien actif (onglet Profil). Si oui, téléchargez à nouveau l affiche depuis le dashboard. Si le problème persiste, contactez-nous à contact@reviewo.app avec une photo du QR code.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">J ai oublié mon mot de passe<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Pour le moment, contactez-nous par email à contact@reviewo.app. Une fonction de récupération sera bientôt ajoutée.</div>
+</div>
+
+<div class="faq-item" onclick="this.classList.toggle('open')">
+<div class="faq-q">Comment modifier mes informations (nom, email, téléphone) ?<span class="faq-q-icon">+</span></div>
+<div class="faq-a">Dans votre tableau de bord → onglet <strong>Profil</strong> → vous pouvez modifier toutes vos informations en temps réel.</div>
+</div>
+
+<h2>🤔 Vous ne trouvez pas votre réponse ?</h2>
+
+<p style="text-align:center">Écrivez-nous à <strong>contact@reviewo.app</strong>, on vous répond sous 48h !</p>
+
+<div style="text-align:center;margin-top:24px">
+<a href="mailto:contact@reviewo.app" style="display:inline-block;background:#00e676;color:#0a0a0a;text-decoration:none;padding:14px 32px;border-radius:10px;font-weight:700;font-size:15px">✉️ Contacter le support</a>
+</div>
+
+<div class="footer">
+Reviewo © 2026 - Tous droits réservés<br>
+<a href="/" style="color:#666">Accueil</a> • <a href="/cgu.html" style="color:#666">CGU/CGV</a> • <a href="/confidentialite.html" style="color:#666">Confidentialité</a> • <a href="/contact.html" style="color:#666">Contact</a>
+</div>
+
+</div>
+</body>
+</html>
