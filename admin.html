@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewo - Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;min-height:100vh;padding:20px}
+.container{max-width:1200px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1f1f1f}
+.logo{font-family:'Fraunces',serif;font-size:24px;font-weight:900}
+.logo span{color:#ef4444}
+.admin-badge{background:#ef4444;color:#fff;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:800;letter-spacing:1.5px;margin-left:10px;text-transform:uppercase}
+.logout{background:transparent;color:#666;border:1px solid #1f1f1f;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px}
+.welcome{font-family:'Fraunces',serif;font-size:32px;font-weight:900;margin-bottom:6px}
+.welcome em{color:#ef4444;font-style:italic}
+.sub{color:#666;margin-bottom:28px;font-size:14px}
+.revenue-hero{background:linear-gradient(135deg,rgba(0,230,118,.12),rgba(0,230,118,.03));border:1px solid rgba(0,230,118,.3);border-radius:20px;padding:28px;margin-bottom:20px}
+.revenue-hero-label{font-size:13px;color:#00e676;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:12px}
+.revenue-hero-value{font-family:'Fraunces',serif;font-size:56px;font-weight:900;color:#00e676;line-height:1}
+.revenue-hero-sub{color:#aaa;font-size:14px;margin-top:10px}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:18px}
+.stat-label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.stat-value{font-family:'Fraunces',serif;font-size:28px;font-weight:900}
+.stat-value.green{color:#00e676}
+.stat-value.gold{color:#f5c842}
+.stat-value.red{color:#ef4444}
+.stat-value.blue{color:#3b82f6}
+.stat-sub{font-size:12px;color:#666;margin-top:4px}
+.card{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:22px;margin-bottom:16px}
+.card-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.revenue-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px}
+.revenue-box{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:22px}
+.revenue-label{font-size:12px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px}
+.revenue-value{font-family:'Fraunces',serif;font-size:38px;font-weight:900;line-height:1}
+.revenue-value.green{color:#00e676}
+.revenue-value.gold{color:#f5c842}
+.revenue-sub{font-size:12px;color:#888;margin-top:6px}
+.search-bar{width:100%;background:#0a0a0a;border:1.5px solid #1f1f1f;border-radius:10px;padding:12px;color:#f2efe8;font-size:14px;outline:none;margin-bottom:16px}
+.search-bar:focus{border-color:#ef4444}
+.client-row{display:grid;grid-template-columns:1.5fr 2fr 1fr 1fr 1fr 0.8fr;gap:12px;padding:14px 12px;border-bottom:1px solid #1f1f1f;align-items:center;font-size:13px}
+.client-row:hover{background:rgba(255,255,255,.02)}
+.client-row.header{font-weight:700;color:#666;text-transform:uppercase;font-size:10px;letter-spacing:1px;background:#0a0a0a;border-radius:8px;padding:10px 12px;border:none}
+.client-name{font-weight:600;color:#f2efe8}
+.client-email{color:#888;font-size:12px;word-break:break-all}
+.status-badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.status-trial{background:rgba(245,200,66,.15);color:#f5c842}
+.status-active{background:rgba(0,230,118,.15);color:#00e676}
+.status-expired{background:rgba(239,68,68,.15);color:#ef4444}
+.status-cancelled{background:rgba(100,100,100,.15);color:#888}
+.days-left{font-family:monospace;font-weight:700}
+.days-left.warning{color:#f5c842}
+.days-left.danger{color:#ef4444}
+.days-left.ok{color:#00e676}
+.empty{text-align:center;padding:40px;color:#666}
+.loading{text-align:center;padding:80px;color:#666;font-size:14px}
+.access-denied{text-align:center;padding:80px 20px}
+.access-denied h1{font-family:'Fraunces',serif;font-size:32px;color:#ef4444;margin-bottom:12px}
+.access-denied p{color:#888;margin-bottom:20px}
+.action-btn{background:transparent;color:#ef4444;border:1px solid rgba(239,68,68,.3);padding:4px 10px;border-radius:6px;font-size:11px;cursor:pointer;font-weight:600}
+.action-btn:hover{background:rgba(239,68,68,.1)}
+@media(max-width:900px){.stats-grid{grid-template-columns:1fr 1fr}.revenue-grid{grid-template-columns:1fr}.client-row{grid-template-columns:1fr;gap:6px;padding:14px}.client-row.header{display:none}.client-row>div{display:flex;justify-content:space-between;font-size:13px}.client-row>div::before{content:attr(data-label);color:#666;font-size:11px;text-transform:uppercase;font-weight:600}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="logo">Reviewo<span>.</span><span class="admin-badge">Admin</span></div>
+<button class="logout" onclick="logout()">Deconnexion</button>
+</div>
+<div id="content" class="loading">Verification des acces...</div>
+</div>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const supabase = createClient('https://xivfhmivalfcnbkvxwbm.supabase.co','sb_publishable_Czi3OLTboQSGmP2nA0NBUQ_koXPrn5x')
+// IMPORTANT : Modifie cette liste avec ton/tes email(s) admin
+const ADMIN_EMAILS = ['robinac112@gmail.com']
+let commerces=[],allAvis=[]
+async function load(){
+  const {data:{session}}=await supabase.auth.getSession()
+  if(!session){window.location.href='/inscription.html';return}
+  if(!ADMIN_EMAILS.includes(session.user.email)){
+    document.getElementById('content').innerHTML='<div class="access-denied"><h1>Acces refuse</h1><p>Vous n avez pas les permissions pour acceder a cette page.</p><button class="logout" onclick="window.location.href=\'/dashboard.html\'">Retour dashboard</button></div>'
+    return
+  }
+  const {data:c}=await supabase.from('commerces').select('*').order('created_at',{ascending:false})
+  commerces=c||[]
+  const {data:a}=await supabase.from('avis').select('*')
+  allAvis=a||[]
+  render()
+}
+function daysBetween(d1,d2){return Math.ceil((new Date(d2)-new Date(d1))/(1000*60*60*24))}
+function render(){
+  const now=new Date()
+  const currentMonth=now.getMonth()
+  const currentYear=now.getFullYear()
+  const lastMonth=currentMonth===0?11:currentMonth-1
+  const lastMonthYear=currentMonth===0?currentYear-1:currentYear
+  // Calculer statuts
+  commerces.forEach(c=>{
+    if(c.statut==='active'){c._status='active'}
+    else if(c.statut==='cancelled'){c._status='cancelled'}
+    else{
+      const daysLeft=daysBetween(now,c.trial_end)
+      c._status=daysLeft>0?'trial':'expired'
+      c._daysLeft=daysLeft
+    }
+  })
+  const totalClients=commerces.length
+  const trialClients=commerces.filter(c=>c._status==='trial').length
+  const activeClients=commerces.filter(c=>c._status==='active').length
+  const expiredClients=commerces.filter(c=>c._status==='expired').length
+  // Revenus
+  const mrrThisMonth=commerces.filter(c=>c._status==='active').reduce((sum,c)=>sum+(parseFloat(c.montant_mensuel)||29),0)
+  const revenueLastMonth=commerces.filter(c=>{
+    if(c._status!=='active'||!c.date_abonnement)return false
+    const d=new Date(c.date_abonnement)
+    return d.getMonth()<=lastMonth&&d.getFullYear()<=lastMonthYear
+  }).reduce((sum,c)=>sum+(parseFloat(c.montant_mensuel)||29),0)
+  const totalRevenue=commerces.filter(c=>c._status==='active'&&c.date_abonnement).reduce((sum,c)=>{
+    const months=Math.max(1,daysBetween(c.date_abonnement,now)/30)
+    return sum+(parseFloat(c.montant_mensuel)||29)*Math.floor(months)
+  },0)
+  let h='<h1 class="welcome">Tableau de bord <em>Admin</em></h1>'
+  h+='<p class="sub">'+now.toLocaleDateString('fr-FR',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+'</p>'
+  // Hero revenus mensuel
+  h+='<div class="revenue-hero">'
+  h+='<div class="revenue-hero-label">💰 Revenus recurrents ce mois (MRR)</div>'
+  h+='<div class="revenue-hero-value">'+mrrThisMonth.toFixed(2)+' €</div>'
+  h+='<div class="revenue-hero-sub">Base sur '+activeClients+' abonnement(s) actif(s)</div>'
+  h+='</div>'
+  // Revenus mois dernier + total
+  h+='<div class="revenue-grid">'
+  h+='<div class="revenue-box"><div class="revenue-label">Revenus mois dernier</div><div class="revenue-value gold">'+revenueLastMonth.toFixed(2)+' €</div><div class="revenue-sub">Paye en '+new Date(lastMonthYear,lastMonth,1).toLocaleDateString('fr-FR',{month:'long',year:'numeric'})+'</div></div>'
+  h+='<div class="revenue-box"><div class="revenue-label">Revenus totaux</div><div class="revenue-value green">'+totalRevenue.toFixed(2)+' €</div><div class="revenue-sub">Depuis le lancement</div></div>'
+  h+='</div>'
+  // Stats clients
+  h+='<div class="stats-grid">'
+  h+='<div class="stat"><div class="stat-label">Total clients</div><div class="stat-value">'+totalClients+'</div><div class="stat-sub">Commerces inscrits</div></div>'
+  h+='<div class="stat"><div class="stat-label">En essai gratuit</div><div class="stat-value gold">'+trialClients+'</div><div class="stat-sub">Potentiels payants</div></div>'
+  h+='<div class="stat"><div class="stat-label">Abonnes payants</div><div class="stat-value green">'+activeClients+'</div><div class="stat-sub">Clients actifs</div></div>'
+  h+='<div class="stat"><div class="stat-label">Essais expires</div><div class="stat-value red">'+expiredClients+'</div><div class="stat-sub">A relancer</div></div>'
+  h+='</div>'
+  // Liste clients
+  h+='<div class="card">'
+  h+='<div class="card-title">👥 Tous les clients ('+totalClients+')</div>'
+  h+='<input type="text" class="search-bar" id="search" placeholder="Rechercher par nom, email..." oninput="filterClients()">'
+  h+='<div id="clients-list">'
+  h+='<div class="client-row header"><div>Commerce</div><div>Email</div><div>Statut</div><div>Essai</div><div>Avis</div><div>Inscrit</div></div>'
+  if(commerces.length===0){h+='<div class="empty">Aucun client pour le moment</div>'}
+  else{
+    commerces.forEach(c=>{
+      const nbAvis=allAvis.filter(a=>a.commerce_id===c.id).length
+      const inscritDate=new Date(c.created_at).toLocaleDateString('fr-FR',{day:'numeric',month:'short',year:'2-digit'})
+      let statusBadge='',daysText='-'
+      if(c._status==='trial'){
+        statusBadge='<span class="status-badge status-trial">Essai</span>'
+        const cls=c._daysLeft<=2?'danger':c._daysLeft<=4?'warning':'ok'
+        daysText='<span class="days-left '+cls+'">'+c._daysLeft+'j restants</span>'
+      }else if(c._status==='active'){
+        statusBadge='<span class="status-badge status-active">Payant</span>'
+        daysText='<span class="days-left ok">✓ Actif</span>'
+      }else if(c._status==='expired'){
+        statusBadge='<span class="status-badge status-expired">Expire</span>'
+        daysText='<span class="days-left danger">Expire</span>'
+      }else{
+        statusBadge='<span class="status-badge status-cancelled">Annule</span>'
+      }
+      h+='<div class="client-row" data-search="'+(c.nom+' '+c.email).toLowerCase()+'">'
+      h+='<div data-label="Commerce"><div class="client-name">'+c.nom+'</div></div>'
+      h+='<div data-label="Email" class="client-email">'+c.email+'</div>'
+      h+='<div data-label="Statut">'+statusBadge+'</div>'
+      h+='<div data-label="Essai">'+daysText+'</div>'
+      h+='<div data-label="Avis"><strong>'+nbAvis+'</strong></div>'
+      h+='<div data-label="Inscrit" style="color:#888;font-size:12px">'+inscritDate+'</div>'
+      h+='</div>'
+    })
+  }
+  h+='</div>'
+  h+='</div>'
+  document.getElementById('content').innerHTML=h
+}
+window.filterClients=function(){
+  const q=document.getElementById('search').value.toLowerCase()
+  document.querySelectorAll('.client-row:not(.header)').forEach(r=>{
+    const s=r.dataset.search||''
+    r.style.display=s.includes(q)?'':'none'
+  })
+}
+window.logout=async function(){
+  await supabase.auth.signOut()
+  window.location.href='/inscription.html'
+}
+load()
+</script>
+</body>
+</html>
