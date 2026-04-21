@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide Reviewo - Votre guide complet</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;line-height:1.7;padding:20px}
+.container{max-width:760px;margin:0 auto;padding:40px 20px}
+.logo{font-family:'Fraunces',serif;font-size:28px;font-weight:900;text-align:center;margin-bottom:8px}
+.logo span{color:#00e676}
+.tagline{text-align:center;color:#666;font-size:14px;letter-spacing:2px;text-transform:uppercase;margin-bottom:40px}
+.hero{text-align:center;padding:40px 20px;background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(245,200,66,.04));border:1px solid rgba(0,230,118,.2);border-radius:20px;margin-bottom:40px}
+.hero h1{font-family:'Fraunces',serif;font-size:40px;font-weight:900;line-height:1.15;margin-bottom:16px;letter-spacing:-1px}
+.hero h1 em{color:#00e676;font-style:italic}
+.hero p{color:#aaa;font-size:16px;max-width:500px;margin:0 auto}
+.intro-box{background:#131313;border:1px solid #1f1f1f;border-radius:16px;padding:28px;margin-bottom:40px}
+.intro-box p{color:#ccc;font-size:15px;margin-bottom:12px}
+.intro-box p:last-child{margin-bottom:0}
+.intro-box strong{color:#00e676}
+.toc{background:#131313;border:1px solid #1f1f1f;border-radius:16px;padding:24px;margin-bottom:50px}
+.toc-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;margin-bottom:16px;color:#00e676}
+.toc-item{padding:8px 0;border-bottom:1px solid #1f1f1f;font-size:14px;color:#aaa;display:flex;gap:12px}
+.toc-item:last-child{border:none}
+.toc-num{color:#00e676;font-weight:700;min-width:24px}
+.section{margin-bottom:50px}
+.section-number{display:inline-block;background:#00e676;color:#0a0a0a;font-family:'Fraunces',serif;font-size:16px;font-weight:900;padding:4px 14px;border-radius:20px;margin-bottom:16px}
+.section h2{font-family:'Fraunces',serif;font-size:28px;font-weight:900;margin-bottom:16px;line-height:1.2;color:#f2efe8}
+.section h3{font-family:'Fraunces',serif;font-size:20px;font-weight:700;margin-top:28px;margin-bottom:12px;color:#f5c842}
+.section p{color:#ccc;font-size:15px;margin-bottom:14px}
+.section strong{color:#f2efe8;font-weight:700}
+.section em{color:#00e676;font-style:normal;font-weight:600}
+.highlight{background:rgba(0,230,118,.08);border-left:3px solid #00e676;padding:16px 20px;border-radius:0 12px 12px 0;margin:20px 0}
+.highlight p{color:#e8e8e8;margin:0}
+.warning{background:rgba(245,200,66,.08);border-left:3px solid #f5c842;padding:16px 20px;border-radius:0 12px 12px 0;margin:20px 0}
+.warning p{color:#e8e8e8;margin:0}
+.warning strong{color:#f5c842}
+.tip{background:rgba(59,130,246,.08);border-left:3px solid #3b82f6;padding:16px 20px;border-radius:0 12px 12px 0;margin:20px 0}
+.tip p{color:#e8e8e8;margin:0}
+.tip strong{color:#3b82f6}
+.steps{counter-reset:step;margin:24px 0}
+.step{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:20px;margin-bottom:12px;position:relative;padding-left:70px;counter-increment:step}
+.step::before{content:counter(step);position:absolute;left:20px;top:20px;background:#00e676;color:#0a0a0a;width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;font-size:18px}
+.step-title{font-weight:700;color:#f2efe8;margin-bottom:6px;font-size:16px}
+.step-desc{color:#aaa;font-size:14px;line-height:1.6;margin:0}
+.quote-examples{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:20px;margin:20px 0}
+.quote{background:#0a0a0a;border-radius:10px;padding:16px;margin-bottom:10px;border-left:3px solid #00e676}
+.quote:last-child{margin-bottom:0}
+.quote-label{font-size:11px;color:#00e676;text-transform:uppercase;letter-spacing:2px;font-weight:700;margin-bottom:6px}
+.quote-text{color:#e8e8e8;font-style:italic;font-size:14px;line-height:1.6}
+.faq-item{background:#131313;border:1px solid #1f1f1f;border-radius:12px;padding:18px;margin-bottom:10px}
+.faq-q{font-weight:700;color:#00e676;margin-bottom:8px;font-size:15px}
+.faq-a{color:#ccc;font-size:14px;line-height:1.6}
+.checklist{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:24px;margin:24px 0}
+.check-item{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #1f1f1f}
+.check-item:last-child{border:none}
+.check-icon{color:#00e676;font-size:18px;flex-shrink:0;margin-top:2px}
+.check-text{color:#ccc;font-size:14px}
+.check-text strong{color:#f2efe8}
+.gold-box{background:linear-gradient(135deg,rgba(245,200,66,.1),rgba(255,107,53,.04));border:1px solid rgba(245,200,66,.3);border-radius:16px;padding:28px;margin:30px 0;text-align:center}
+.gold-box h3{font-family:'Fraunces',serif;font-size:22px;color:#f5c842;margin-bottom:12px;margin-top:0}
+.gold-box p{color:#e8e8e8;font-size:15px}
+.cta{background:#00e676;color:#0a0a0a;text-decoration:none;padding:14px 28px;border-radius:10px;font-weight:700;display:inline-block;margin-top:16px;font-size:15px}
+.footer{text-align:center;padding:40px 20px;border-top:1px solid #1f1f1f;margin-top:60px;color:#666;font-size:13px}
+.footer strong{color:#00e676}
+.divider{border:none;height:1px;background:#1f1f1f;margin:40px 0}
+.big-number{font-family:'Fraunces',serif;font-size:48px;font-weight:900;color:#00e676;line-height:1;margin:16px 0}
+.stats-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:24px 0}
+.stat-card{background:#131313;border:1px solid #1f1f1f;border-radius:12px;padding:16px;text-align:center}
+.stat-num{font-family:'Fraunces',serif;font-size:28px;font-weight:900;color:#00e676;line-height:1}
+.stat-lbl{font-size:11px;color:#888;text-transform:uppercase;letter-spacing:1px;margin-top:6px}
+@media(max-width:640px){.hero h1{font-size:30px}.section h2{font-size:24px}.stats-row{grid-template-columns:1fr}.container{padding:20px 10px}}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="logo">Reviewo<span>.</span></div>
+<div class="tagline">Guide de demarrage complet</div>
+
+<div class="hero">
+<h1>Bienvenue dans <em>Reviewo</em> !</h1>
+<p>Ce guide va vous expliquer <strong>tout</strong> ce qu'il faut savoir pour reussir avec Reviewo, de l'installation jusqu'a votre 100eme avis Google.</p>
+</div>
+
+<div class="intro-box">
+<p>Felicitations, vous venez de prendre une decision qui va transformer la reputation en ligne de votre commerce. <strong>69% des clients</strong> consultent les avis Google avant de choisir un commerce. Plus vous avez d'avis positifs, plus vous attirez de clients.</p>
+<p>Reviewo vous permet de <strong>multiplier vos avis Google par 3 ou 4 en moyenne</strong>, tout en filtrant intelligemment les clients mecontents pour qu'ils vous parlent en prive plutot que de critiquer publiquement.</p>
+<p>Lisez ce guide tranquillement, il prend 10 minutes. <strong>Apres ca, vous saurez tout.</strong></p>
+</div>
+
+<div class="toc">
+<div class="toc-title">📖 Dans ce guide</div>
+<div class="toc-item"><span class="toc-num">1.</span><span>Comment fonctionne Reviewo (le principe)</span></div>
+<div class="toc-item"><span class="toc-num">2.</span><span>Configurer votre compte en 3 minutes</span></div>
+<div class="toc-item"><span class="toc-num">3.</span><span>Choisir le lot du tirage au sort</span></div>
+<div class="toc-item"><span class="toc-num">4.</span><span>Imprimer et placer vos affiches</span></div>
+<div class="toc-item"><span class="toc-num">5.</span><span>Comment parler du jeu a vos clients</span></div>
+<div class="toc-item"><span class="toc-num">6.</span><span>Gerer les avis recus (positifs et negatifs)</span></div>
+<div class="toc-item"><span class="toc-num">7.</span><span>Lancer le tirage au sort mensuel</span></div>
+<div class="toc-item"><span class="toc-num">8.</span><span>Conseils pour maximiser les resultats</span></div>
+<div class="toc-item"><span class="toc-num">9.</span><span>Questions frequentes</span></div>
+</div>
+
+<div class="section">
+<div class="section-number">1</div>
+<h2>Comment fonctionne Reviewo ?</h2>
+
+<p>Reviewo est simple : vos clients scannent un <strong>QR code</strong> (sur une affiche ou une carte de table), et en 30 secondes ils vous evaluent. Mais voici la magie :</p>
+
+<div class="steps">
+<div class="step">
+<div class="step-title">Le client donne une note de 1 a 5 etoiles</div>
+<p class="step-desc">Le client choisit combien d'etoiles il donne a votre commerce.</p>
+</div>
+<div class="step">
+<div class="step-title">Si 4 ou 5 etoiles : redirection vers Google</div>
+<p class="step-desc">Le client satisfait est automatiquement envoye sur votre page Google pour laisser son avis public. Il peut aussi laisser son numero pour participer au tirage au sort.</p>
+</div>
+<div class="step">
+<div class="step-title">Si 1, 2 ou 3 etoiles : avis interne prive</div>
+<p class="step-desc">Le client mecontent recoit un questionnaire prive. Il vous explique ce qui n'allait pas (accueil, attente, proprete...) et peut laisser un commentaire. <strong>Cet avis ne va PAS sur Google.</strong> Il reste entre vous.</p>
+</div>
+</div>
+
+<div class="highlight">
+<p><strong>Resultat :</strong> Vos avis Google augmentent uniquement avec des 4 et 5 etoiles. Les critiques negatives vous parviennent en prive pour que vous puissiez ameliorer votre service sans polluer votre reputation en ligne.</p>
+</div>
+
+<div class="stats-row">
+<div class="stat-card"><div class="stat-num">+340%</div><div class="stat-lbl">Plus d'avis Google</div></div>
+<div class="stat-card"><div class="stat-num">69%</div><div class="stat-lbl">Clients decident via avis</div></div>
+<div class="stat-card"><div class="stat-num">30s</div><div class="stat-lbl">Par client</div></div>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+<div class="section-number">2</div>
+<h2>Configurer votre compte en 3 minutes</h2>
+
+<p>Apres votre inscription, vous avez automatiquement acces a votre <strong>tableau de bord</strong> (aussi appele dashboard). C'est votre espace personnel ou vous controlez tout.</p>
+
+<p>Pour y acceder, allez sur <strong>reviewo-app.vercel.app</strong> et connectez-vous avec votre email et votre mot de passe.</p>
+
+<h3>Les elements a verifier dans votre profil :</h3>
+
+<div class="checklist">
+<div class="check-item"><span class="check-icon">✓</span><div class="check-text"><strong>Nom du commerce</strong><br>Il apparait sur toutes vos affiches. Verifiez qu'il est bien orthographie.</div></div>
+<div class="check-item"><span class="check-icon">✓</span><div class="check-text"><strong>Email de connexion</strong><br>Vous utilisez cet email pour vous connecter et recevoir les notifications.</div></div>
+<div class="check-item"><span class="check-icon">✓</span><div class="check-text"><strong>Lien Google</strong><br>C'est le lien vers votre fiche Google Business. Les clients satisfaits y sont rediriges automatiquement. Pour le trouver : tapez votre commerce sur Google, cliquez sur "Ecrire un avis" et copiez l'URL.</div></div>
+</div>
+
+<div class="tip">
+<p><strong>💡 Astuce :</strong> Si vous n'avez pas encore de fiche Google Business, creez-en une gratuitement sur <strong>google.com/business</strong>. C'est indispensable pour recevoir des avis Google.</p>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+<div class="section-number">3</div>
+<h2>Choisir le lot du tirage au sort</h2>
+
+<p>Le <strong>tirage au sort</strong> est l'element qui va motiver vos clients a laisser un avis. Plus le lot est attractif, plus vos clients participent. <em>C'est vous qui choisissez le lot que vous voulez offrir.</em></p>
+
+<h3>Quelques idees de lots qui marchent bien :</h3>
+
+<div class="steps">
+<div class="step">
+<div class="step-title">Bon d'achat dans votre commerce (le plus populaire)</div>
+<p class="step-desc">Exemples : "Bon d'achat 50€", "Repas pour 2 personnes", "Un dessert offert a chaque commande". C'est economique pour vous et ca fait revenir le client !</p>
+</div>
+<div class="step">
+<div class="step-title">Un produit de votre gamme</div>
+<p class="step-desc">Exemples : "Une pizza au choix", "Un cafe gratuit pendant 1 mois", "Un menu complet offert". Le gagnant devient ambassadeur.</p>
+</div>
+<div class="step">
+<div class="step-title">Une experience speciale</div>
+<p class="step-desc">Exemples : "Une table VIP pour 2", "Un atelier prive", "Une reduction de 50% sur le prochain achat". Creez du buzz !</p>
+</div>
+</div>
+
+<div class="warning">
+<p><strong>⚠️ Important :</strong> Le lot doit etre <strong>reel et tenable</strong>. Si vous promettez un bon de 100€, vous devez pouvoir l'honorer. Conseil : commencez avec un lot raisonnable comme <strong>"Bon d'achat 30€"</strong> le premier mois.</p>
+</div>
+
+<h3>Comment modifier le lot ?</h3>
+<p>Dans votre tableau de bord, section "Tirage au sort mensuel". Tapez votre lot dans le champ, cliquez sur <strong>"Enregistrer"</strong>. Votre affiche se met automatiquement a jour avec le nouveau lot. Vous pouvez changer le lot chaque mois !</p>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+<div class="section-number">4</div>
+<h2>Imprimer et placer vos affiches</h2>
+
+<p>Dans votre tableau de bord, vous avez <strong>2 formats d'affiches</strong> disponibles :</p>
+
+<div class="steps">
+<div class="step">
+<div class="step-title">Format A4 (21 x 29,7 cm)</div>
+<p class="step-desc">La grande affiche a coller au mur, a la caisse, ou pres de la porte. Imprimez sur une feuille A4 standard. Minimum 2 exemplaires recommande.</p>
+</div>
+<div class="step">
+<div class="step-title">Format Table (10 x 15 cm)</div>
+<p class="step-desc">La petite carte a poser sur chaque table ou au comptoir. Imprimez sur du papier epais pour qu'elle tienne debout. Comptez 1 carte par table.</p>
+</div>
+</div>
+
+<h3>Ou placer vos affiches ?</h3>
+
+<div class="checklist">
+<div class="check-item"><span class="check-icon">📍</span><div class="check-text"><strong>A la caisse (obligatoire)</strong><br>L'endroit ou le client paie. C'est le moment ideal car le client vient de vivre l'experience.</div></div>
+<div class="check-item"><span class="check-icon">📍</span><div class="check-text"><strong>Sur chaque table (si restaurant)</strong><br>Les clients scannent pendant qu'ils attendent ou apres le repas.</div></div>
+<div class="check-item"><span class="check-icon">📍</span><div class="check-text"><strong>Pres de la sortie</strong><br>Dernier rappel avant de partir.</div></div>
+<div class="check-item"><span class="check-icon">📍</span><div class="check-text"><strong>Dans la vitrine (si salon, boutique)</strong><br>Visible meme pour ceux qui passent devant.</div></div>
+<div class="check-item"><span class="check-icon">📍</span><div class="check-text"><strong>Sur le ticket de caisse</strong><br>Bonus : imprimez un petit QR code sur vos tickets si possible.</div></div>
+</div>
+
+<div class="tip">
+<p><strong>💡 Astuce :</strong> Plus il y a d'affiches, plus vous recevez d'avis. N'ayez pas peur d'en mettre partout !</p>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+<div class="section-number">5</div>
+<h2>Comment parler du jeu a vos clients ?</h2>
+
+<p><strong>C'est le point le plus important de ce guide.</strong> Une affiche seule ne suffit pas. Il faut <em>parler</em> du jeu a vos clients au bon moment. Voici exactement quoi dire :</p>
+
+<h3>Le bon moment pour en parler</h3>
+
+<p>Le meilleur moment est <strong>juste apres le service</strong>, quand le client a termine et qu'il est content. Jamais au debut, jamais pendant qu'il est occupe.</p>
+
+<div class="steps">
+<div class="step">
+<div class="step-title">Au restaurant : apres le dessert ou au moment de l'addition</div>
+<p class="step-desc">"Vous avez passe un bon moment ? Si oui, n'hesitez pas a scanner ce QR code, c'est 30 secondes et vous pouvez gagner [votre lot] !"</p>
+</div>
+<div class="step">
+<div class="step-title">En boutique : au moment du paiement</div>
+<p class="step-desc">"Tenez, pendant que je vous encaisse, regardez : vous pouvez gagner [votre lot] simplement en laissant un petit avis. Ca prend 30 secondes !"</p>
+</div>
+<div class="step">
+<div class="step-title">En salon (coiffeur, esthetique) : avant le depart</div>
+<p class="step-desc">"Vous etes satisfaite du resultat ? Parfait, je vais vous montrer quelque chose : vous pouvez gagner [votre lot] en laissant un avis, ca me ferait tres plaisir !"</p>
+</div>
+</div>
+
+<h3>Phrases exactes que vous pouvez utiliser :</h3>
+
+<div class="quote-examples">
+<div class="quote">
+<div class="quote-label">Version courte (recommandee)</div>
+<div class="quote-text">"Si vous avez passe un bon moment, scannez ce QR code, ca prend 30 secondes et vous pouvez gagner [le lot] !"</div>
+</div>
+<div class="quote">
+<div class="quote-label">Version complete</div>
+<div class="quote-text">"On organise un tirage au sort ce mois-ci : tous nos clients qui laissent un avis participent automatiquement et peuvent gagner [le lot]. Vous scannez le QR code, vous mettez une note, et c'est fini. Ca prend 30 secondes."</div>
+</div>
+<div class="quote">
+<div class="quote-label">Version amicale</div>
+<div class="quote-text">"J'ai un petit service a vous demander : on fait gagner [le lot] ce mois-ci a un de nos clients. Si vous scannez ce QR code et laissez un avis, vous participez automatiquement !"</div>
+</div>
+</div>
+
+<div class="highlight">
+<p><strong>La regle d'or :</strong> Soyez <strong>naturel et souriant</strong>. Ne forcez jamais. Les clients satisfaits seront ravis de vous aider, surtout si un lot est a gagner.</p>
+</div>
+
+<h3>Ce qu'il NE FAUT PAS dire :</h3>
+
+<div class="warning">
+<p><strong>❌ "Laissez-moi un 5 etoiles s'il vous plait"</strong><br>Ca parait force et le client pourrait etre mefiant. Google interdit aussi d'acheter des avis.</p>
+</div>
+<div class="warning">
+<p><strong>❌ "Vous POUVEZ laisser un avis sur Google"</strong><br>Trop complique. Le client oublie des qu'il sort. Parlez du QR code et du jeu !</p>
+</div>
+<div class="warning">
+<p><strong>❌ Ne rien dire</strong><br>L'affiche seule ne suffit pas. Parlez-en a chaque client.</p>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+<div class="section-number">6</div>
+<h2>Gerer les avis recus (positifs et negatifs)</h2>
+
+<p>Tous les avis arrivent automatiquement dans votre tableau de bord, dans la section <strong>"Avis recus"</strong>, avec <strong>2 onglets</strong> :</p>
+
+<h3>Onglet "Google"</h3>
+<p>Ce sont les clients qui ont laisse 4 ou 5 etoiles. Ils ont ete rediriges vers Google pour laisser un avis public. Vous voyez ici :</p>
+<ul style="color:#ccc;font-size:14px;padding-left:20px;margin:12px 0">
+<li style="margin-bottom:6px">La note donnee</li>
+<li style="margin-bottom:6px">La date et l'heure</li>
+<li style="margin-bottom:6px">Le numero de telephone (s'ils ont participe au tirage)</li>
+</ul>
+
+<h3>Onglet "A ameliorer"</h3>
+<p>Ce sont les clients qui ont laisse 1, 2 ou 3 etoiles. Leur avis est <strong>prive</strong>, il n'est PAS sur Google. Vous voyez :</p>
+<ul style="color:#ccc;font-size:14px;padding-left:20px;margin:12px 0">
+<li style="margin-bottom:6px">La note donnee</li>
+<li style="margin-bottom:6px">Les problemes cochés (accueil, attente, proprete, prix, qualite...)</li>
+<li style="margin-bottom:6px">Le commentaire libre s'ils en ont laisse un</li>
+</ul>
+
+<div class="highlight">
+<p><strong>Que faire avec les avis negatifs ?</strong> Lisez-les avec l'esprit ouvert. Si plusieurs clients se plaignent de la meme chose (l'attente par exemple), c'est un signal. Ameliorez ce point et vos notes augmenteront naturellement.</p>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+<div class="section-number">7</div>
+<h2>Lancer le tirage au sort mensuel</h2>
+
+<p>A la fin du mois, c'est le moment du tirage ! Voici comment ca marche :</p>
+
+<div class="steps">
+<div class="step">
+<div class="step-title">Verifiez le nombre de participants</div>
+<p class="step-desc">Dans "Tirage au sort mensuel", vous voyez le nombre de <strong>"Participants eligibles"</strong>. Ce sont tous les clients qui ont laisse 4 ou 5 etoiles ET leur numero.</p>
+</div>
+<div class="step">
+<div class="step-title">Cliquez sur "Lancer le tirage"</div>
+<p class="step-desc">Reviewo selectionne un gagnant <strong>au hasard</strong>, de maniere totalement aleatoire et transparente.</p>
+</div>
+<div class="step">
+<div class="step-title">Contactez le gagnant</div>
+<p class="step-desc">Vous voyez son numero de telephone. Appelez-le ou envoyez-lui un SMS pour lui annoncer qu'il a gagne !</p>
+</div>
+<div class="step">
+<div class="step-title">Remettez le lot</div>
+<p class="step-desc">Demandez-lui de venir recuperer son lot dans votre commerce. C'est l'occasion parfaite pour le re-fideliser et qu'il reparle de vous !</p>
+</div>
+</div>
+
+<h3>Exemple de message au gagnant :</h3>
+
+<div class="quote-examples">
+<div class="quote">
+<div class="quote-label">SMS a envoyer</div>
+<div class="quote-text">"Bonjour ! C'est [votre nom] de [votre commerce]. Bonne nouvelle : vous etes le gagnant de notre tirage au sort du mois ! Vous avez gagne [le lot]. Passez quand vous voulez pour le recuperer. Merci encore pour votre avis ! 🎉"</div>
+</div>
+</div>
+
+<div class="tip">
+<p><strong>💡 Astuce :</strong> Prenez une photo du gagnant recevant son lot (avec son accord) et postez-la sur Instagram ou Facebook. Ca incite vos autres clients a participer le mois suivant !</p>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+<div class="section-number">8</div>
+<h2>Conseils pour maximiser les resultats</h2>
+
+<h3>Les 10 regles d'or pour cartonner avec Reviewo</h3>
+
+<div class="checklist">
+<div class="check-item"><span class="check-icon">1.</span><div class="check-text"><strong>Parlez du jeu a CHAQUE client satisfait.</strong> Pas d'exception. C'est 2 secondes, ca rapporte enormement.</div></div>
+<div class="check-item"><span class="check-icon">2.</span><div class="check-text"><strong>Placez au moins 3 affiches visibles.</strong> Une a la caisse, une sur chaque table, une pres de la sortie.</div></div>
+<div class="check-item"><span class="check-icon">3.</span><div class="check-text"><strong>Variez les lots chaque mois.</strong> Ca maintient l'interet. Alternez bon d'achat, produit, experience VIP.</div></div>
+<div class="check-item"><span class="check-icon">4.</span><div class="check-text"><strong>Annoncez le gagnant publiquement.</strong> Sur Instagram, Facebook, ou en vitrine. Ca prouve que le tirage est reel.</div></div>
+<div class="check-item"><span class="check-icon">5.</span><div class="check-text"><strong>Formez vos employes.</strong> Expliquez-leur le script et insistez pour qu'ils en parlent a chaque client.</div></div>
+<div class="check-item"><span class="check-icon">6.</span><div class="check-text"><strong>Prenez les critiques au serieux.</strong> Les avis internes sont un cadeau : ils vous disent quoi ameliorer sans nuire a votre image.</div></div>
+<div class="check-item"><span class="check-icon">7.</span><div class="check-text"><strong>Repondez aux avis Google.</strong> Remerciez chaque client qui laisse un avis public sur Google. Ca booste votre referencement.</div></div>
+<div class="check-item"><span class="check-icon">8.</span><div class="check-text"><strong>Fixez-vous un objectif mensuel.</strong> Par exemple : "10 nouveaux avis Google ce mois-ci". Ca motive toute l'equipe.</div></div>
+<div class="check-item"><span class="check-icon">9.</span><div class="check-text"><strong>Renouvelez vos affiches.</strong> Si elles sont abimees, reimprimez-les. Une belle affiche = plus de scans.</div></div>
+<div class="check-item"><span class="check-icon">10.</span><div class="check-text"><strong>Soyez patient.</strong> Les resultats commencent des la premiere semaine, mais c'est apres 1-2 mois que votre note Google explose.</div></div>
+</div>
+
+<div class="gold-box">
+<h3>🏆 Objectif realiste</h3>
+<p>Avec une bonne utilisation, la plupart de nos clients obtiennent <strong>15 a 40 nouveaux avis Google par mois</strong>. Certains depassent 100. Tout depend de votre volume de clients et de votre implication.</p>
+</div>
+</div>
+
+<hr class="divider">
+
+<div class="section">
+<div class="section-number">9</div>
+<h2>Questions frequentes</h2>
+
+<div class="faq-item">
+<div class="faq-q">Est-ce legal de filtrer les avis comme ca ?</div>
+<div class="faq-a">Oui, c'est 100% legal. Vous ne falsifiez aucun avis. Les clients satisfaits choisissent librement de laisser un avis Google. Les clients mecontents choisissent de vous parler en prive. Reviewo ne bloque personne, il propose simplement le bon canal.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Que se passe-t-il si un client mecontent veut quand meme laisser un avis Google ?</div>
+<div class="faq-a">Rien ne l'empeche. Reviewo ne bloque aucun client. Mais la grande majorite des clients mecontents se contentent du questionnaire interne, car c'est plus rapide et ils se sentent ecoutes.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Qui paie le lot du tirage au sort ?</div>
+<div class="faq-a">C'est vous, en tant que commercant. C'est pour ca qu'il est conseille d'offrir un <strong>bon d'achat dans votre propre commerce</strong> : ca vous coute moins cher ET ca fait revenir le gagnant chez vous.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Que se passe-t-il apres les 7 jours d'essai gratuits ?</div>
+<div class="faq-a">Vous passez sur l'abonnement mensuel pour continuer a utiliser Reviewo. Vous pouvez annuler a tout moment depuis votre tableau de bord.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Est-ce que les clients doivent telecharger une application ?</div>
+<div class="faq-a">Non ! Zero application. Ils scannent le QR code avec l'appareil photo de leur telephone (deja integre), et c'est tout.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Puis-je utiliser Reviewo pour plusieurs commerces ?</div>
+<div class="faq-a">Chaque compte Reviewo correspond a un commerce. Si vous avez plusieurs etablissements, creez un compte par etablissement (chacun aura son propre QR code et ses propres statistiques).</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Qui tire au sort le gagnant ?</div>
+<div class="faq-a">C'est notre systeme qui tire au sort <strong>automatiquement et de maniere totalement aleatoire</strong> parmi tous les participants. Vous cliquez sur "Lancer le tirage" et Reviewo choisit. Aucune triche possible.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">A quelle frequence dois-je changer le lot ?</div>
+<div class="faq-a">Idealement <strong>chaque mois</strong>. Ca relance l'interet et ca vous permet de tester ce qui marche le mieux avec vos clients.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Et si je n'ai personne qui scanne le premier jour ?</div>
+<div class="faq-a">C'est normal. Le lancement demande de l'energie : parlez-en a chaque client, verifiez que les affiches sont bien visibles. Les premiers scans arrivent generalement dans les 24-48h.</div>
+</div>
+
+<div class="faq-item">
+<div class="faq-q">Combien de temps avant de voir ma note Google augmenter ?</div>
+<div class="faq-a">Les premiers avis arrivent sur Google sous 1 a 7 jours. Votre note moyenne commence a bouger apres 10-15 nouveaux avis. Apres 1 mois, la transformation est visible.</div>
+</div>
+</div>
+
+<div class="gold-box">
+<h3>🚀 Vous etes pret !</h3>
+<p>Vous avez maintenant tout ce qu'il faut pour reussir avec Reviewo. Connectez-vous a votre tableau de bord, telechargez votre affiche, placez-la et commencez a parler du jeu a vos clients des aujourd'hui.</p>
+<a href="https://reviewo-app.vercel.app/dashboard.html" class="cta">Acceder a mon tableau de bord</a>
+</div>
+
+<div class="footer">
+<p>Une question ? Ecrivez-nous a <strong>contact@reviewo.app</strong></p>
+<p style="margin-top:12px">Propulse par <strong>REVIEWO</strong></p>
+</div>
+
+</div>
+</body>
+</html>
