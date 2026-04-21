@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reviewo Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@700;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:#0a0a0a;color:#f2efe8;font-family:'DM Sans',sans-serif;min-height:100vh;padding:20px}
+.container{max-width:1000px;margin:0 auto}
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid #1f1f1f}
+.logo{font-family:'Fraunces',serif;font-size:24px;font-weight:900}
+.logo span{color:#00e676}
+.logout{background:transparent;color:#666;border:1px solid #1f1f1f;padding:8px 14px;border-radius:8px;cursor:pointer;font-size:13px}
+.welcome{font-family:'Fraunces',serif;font-size:28px;font-weight:900;margin-bottom:6px}
+.welcome em{color:#00e676;font-style:italic}
+.sub{color:#666;margin-bottom:28px;font-size:14px}
+.main-tabs{display:flex;gap:6px;margin-bottom:24px;overflow-x:auto;padding-bottom:8px}
+.main-tab{padding:10px 16px;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #1f1f1f;background:transparent;color:#f2efe8;white-space:nowrap;font-family:'DM Sans',sans-serif}
+.main-tab.active{background:#00e676;color:#0a0a0a;border:none}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:18px}
+.stat-label{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.stat-value{font-family:'Fraunces',serif;font-size:28px;font-weight:900}
+.stat-value.green{color:#00e676}
+.stat-sub{font-size:12px;color:#666;margin-top:4px}
+.card{background:#131313;border:1px solid #1f1f1f;border-radius:14px;padding:22px;margin-bottom:16px}
+.card-title{font-family:'Fraunces',serif;font-size:16px;font-weight:700;margin-bottom:16px}
+.btn{background:#00e676;color:#0a0a0a;border:none;padding:12px 18px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;width:100%;margin-top:10px;font-family:'DM Sans',sans-serif}
+.btn:disabled{opacity:.4}
+.btn-gold{background:#f5c842;color:#0a0a0a}
+.btn-ghost{background:transparent;color:#f2efe8;border:1px solid #1f1f1f}
+.btn-danger{background:#ef4444;color:#fff}
+.format-tabs{display:flex;gap:8px;margin-bottom:16px}
+.format-tab{flex:1;padding:12px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #1f1f1f;background:transparent;color:#f2efe8;font-family:'DM Sans',sans-serif}
+.format-tab.active{background:#00e676;color:#0a0a0a;border:none}
+.format-info{font-size:12px;color:#888;text-align:center;margin-bottom:14px;padding:10px;background:#0a0a0a;border-radius:8px}
+.preview-canvas{max-width:100%;height:auto;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.3);display:block;margin:0 auto}
+.preview-wrap{background:#e5e5e5;border-radius:14px;padding:20px;margin-bottom:14px;text-align:center;min-height:100px}
+.lot-box{background:rgba(245,200,66,.08);border:1px solid rgba(245,200,66,.2);border-radius:12px;padding:18px;margin-bottom:14px}
+.input{width:100%;background:#0a0a0a;border:1.5px solid #1f1f1f;border-radius:10px;padding:12px;color:#f2efe8;font-size:14px;outline:none;margin-bottom:10px;font-family:'DM Sans',sans-serif}
+.input:focus{border-color:#00e676}
+.input-label{font-size:12px;color:#888;display:block;margin-bottom:6px;margin-top:10px}
+.lot-stats{display:flex;justify-content:space-between;margin-top:12px;padding-top:12px;border-top:1px solid rgba(245,200,66,.15)}
+.lot-count{font-family:'Fraunces',serif;font-size:22px;font-weight:900;color:#f5c842}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tab-btn{flex:1;padding:10px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid #1f1f1f;background:transparent;color:#f2efe8;font-family:'DM Sans',sans-serif}
+.tab-btn.active{background:#00e676;color:#0a0a0a;border:none}
+.review-google{display:flex;gap:12px;padding:14px 0;border-bottom:1px solid #1f1f1f;align-items:center}
+.review-avatar{width:40px;height:40px;border-radius:10px;background:#1f1f1f;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.review-interne{background:#1a1a1a;border-radius:12px;padding:16px;margin-bottom:10px;border-left:3px solid #ef4444}
+.review-time{font-size:11px;color:#666}
+.stars-display{font-size:16px}
+.review-comment{font-size:14px;color:#f2efe8;line-height:1.6;font-style:italic;margin:10px 0;padding:12px;background:#0a0a0a;border-radius:8px;border-left:2px solid #ef4444}
+.problem-tag{background:rgba(239,68,68,.15);color:#ef4444;padding:4px 10px;border-radius:20px;font-size:11px;font-weight:600;display:inline-block;margin:2px}
+.no-comment{font-size:12px;color:#666;font-style:italic;margin-top:8px}
+.phone-info{font-size:12px;color:#888;margin-top:4px}
+.winner-box{background:rgba(0,230,118,.08);border:1px solid rgba(0,230,118,.3);border-radius:12px;padding:18px;margin-top:14px;text-align:center}
+.winner-title{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:#00e676;margin-bottom:8px}
+.winner-phone{font-family:monospace;font-size:20px;font-weight:700}
+.empty{text-align:center;padding:40px;color:#666}
+.loading{text-align:center;padding:40px;color:#666}
+.sub-hero{background:linear-gradient(135deg,rgba(0,230,118,.08),rgba(0,230,118,.02));border:1px solid rgba(0,230,118,.3);border-radius:14px;padding:22px;margin-bottom:16px}
+.sub-hero.expired{background:linear-gradient(135deg,rgba(239,68,68,.08),rgba(239,68,68,.02));border-color:rgba(239,68,68,.3)}
+.sub-hero.trial{background:linear-gradient(135deg,rgba(245,200,66,.08),rgba(245,200,66,.02));border-color:rgba(245,200,66,.3)}
+.sub-badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.sub-badge.active{background:#00e676;color:#0a0a0a}
+.sub-badge.trial{background:#f5c842;color:#0a0a0a}
+.sub-badge.expired{background:#ef4444;color:#fff}
+.sub-title{font-family:'Fraunces',serif;font-size:22px;font-weight:900;margin-bottom:8px}
+.sub-detail{color:#aaa;font-size:14px;margin-bottom:4px}
+.sub-detail strong{color:#f2efe8}
+.danger-zone{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.2);border-radius:12px;padding:18px;margin-top:20px}
+.danger-zone-title{color:#ef4444;font-weight:700;font-size:14px;margin-bottom:8px}
+.danger-zone-desc{color:#888;font-size:13px;margin-bottom:12px;line-height:1.5}
+@media(max-width:768px){.stats-grid{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<div class="logo">Reviewo<span>.</span></div>
+<button class="logout" onclick="logout()">Deconnexion</button>
+</div>
+<div id="content" class="loading">Chargement...</div>
+</div>
+<script type="module">
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+const supabase=createClient('https://xivfhmivalfcnbkvxwbm.supabase.co','sb_publishable_Czi3OLTboQSGmP2nA0NBUQ_koXPrn5x')
+const STRIPE_LINK='https://buy.stripe.com/test_6oU3cu4cLcb87Mu9o53Ru00'
+let commerce=null,avis=[]
+
+async function load(){
+  const {data:{session}}=await supabase.auth.getSession()
+  if(!session){window.location.href='/inscription.html';return}
+  const {data:c}=await supabase.from('commerces').select('*').eq('user_id',session.user.id).single()
+  if(!c){document.getElementById('content').innerHTML='Commerce introuvable';return}
+  commerce=c
+  const {data:a}=await supabase.from('avis').select('*').eq('commerce_id',c.id).order('created_at',{ascending:false})
+  avis=a||[]
+  render()
+}
+
+async function checkPayment(){
+  const p=new URLSearchParams(window.location.search)
+  if(p.get('success')==='true'&&commerce){
+    const {error}=await supabase.from('commerces').update({statut:'active',date_abonnement:new Date().toISOString(),montant_mensuel:29}).eq('id',commerce.id)
+    if(!error){alert('🎉 Abonnement actif !');window.history.replaceState({},'',window.location.pathname);load()}
+  }
+}
+
+function loadQRImage(text,size){
+  return new Promise((resolve,reject)=>{
+    const img=new Image()
+    img.crossOrigin='anonymous'
+    img.onload=()=>resolve(img)
+    img.onerror=reject
+    img.src='https://api.qrserver.com/v1/create-qr-code/?size='+size+'x'+size+'&margin=2&ecc=H&data='+encodeURIComponent(text)
+  })
+}
+
+function wrap(ctx,text,maxW){
+  const words=(text||'').split(' '),lines=[]
+  let cur=''
+  words.forEach(w=>{
+    const t=cur?cur+' '+w:w
+    if(ctx.measureText(t).width<=maxW)cur=t
+    else{if(cur)lines.push(cur);cur=w}
+  })
+  if(cur)lines.push(cur)
+  return lines
+}
+
+function roundRect(ctx,x,y,w,h,r){
+  ctx.beginPath()
+  ctx.moveTo(x+r,y)
+  ctx.arcTo(x+w,y,x+w,y+h,r)
+  ctx.arcTo(x+w,y+h,x,y+h,r)
+  ctx.arcTo(x,y+h,x,y,r)
+  ctx.arcTo(x,y,x+w,y,r)
+  ctx.closePath()
+}
+
+async function drawA4(){
+  const W=1240,H=1754
+  const canvas=document.createElement('canvas')
+  canvas.width=W;canvas.height=H
+  const ctx=canvas.getContext('2d')
+  const voteLink=window.location.origin+'/vote.html?c='+commerce.id
+  const qrImg=await loadQRImage(voteLink,520)
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H)
+  ctx.fillStyle='#f5c842';ctx.fillRect(0,0,W,24)
+  ctx.textAlign='center'
+  ctx.fillStyle='#ff6b35'
+  ctx.font='bold 28px Arial'
+  ctx.fillText('VOTRE AVIS COMPTE',W/2,130)
+  ctx.fillStyle='#0a0a0a'
+  ctx.font='900 90px Georgia'
+  const nomLines=wrap(ctx,commerce.nom,W-160)
+  let y=230
+  nomLines.forEach(l=>{ctx.fillText(l,W/2,y);y+=100})
+  ctx.fillStyle='#f5c842'
+  ctx.fillRect(W/2-60,y,120,8)
+  y+=60
+  ctx.fillStyle='#333';ctx.font='500 40px Arial'
+  ctx.fillText('Aidez-nous a nous ameliorer',W/2,y+40)
+  ctx.fillStyle='#0a0a0a';ctx.font='800 46px Arial'
+  ctx.fillText('en 30 secondes',W/2,y+100)
+  const boxY=y+150,boxH=180
+  ctx.fillStyle='#fff8e1'
+  roundRect(ctx,100,boxY,W-200,boxH,25);ctx.fill()
+  ctx.strokeStyle='#f5c842';ctx.lineWidth=4
+  ctx.setLineDash([12,8]);ctx.stroke();ctx.setLineDash([])
+  ctx.font='56px Arial'
+  ctx.fillText('🎁',W/2,boxY+60)
+  ctx.fillStyle='#333';ctx.font='600 28px Arial'
+  ctx.fillText('Laissez un avis et tentez de gagner',W/2,boxY+100)
+  ctx.fillStyle='#ff6b35';ctx.font='900 38px Arial'
+  const lotLines=wrap(ctx,commerce.lot||'un cadeau',W-240)
+  ctx.fillText(lotLines[0]||'un cadeau',W/2,boxY+150)
+  const qrX=(W-520)/2,qrY=boxY+boxH+80
+  ctx.fillStyle='#fff';ctx.fillRect(qrX-20,qrY-20,560,560)
+  ctx.strokeStyle='#f0f0f0';ctx.lineWidth=4
+  ctx.strokeRect(qrX-20,qrY-20,560,560)
+  ctx.drawImage(qrImg,qrX,qrY,520,520)
+  ctx.fillStyle='#666';ctx.font='600 30px Arial'
+  ctx.fillText('Scannez avec votre telephone',W/2,qrY+590)
+  ctx.fillStyle='#aaa';ctx.font='600 20px Arial'
+  ctx.fillText('Propulse par',W/2,H-60)
+  ctx.fillStyle='#0a0a0a';ctx.font='900 26px Arial'
+  ctx.fillText('REVIEWO',W/2,H-28)
+  return canvas
+}
+
+async function drawCard(){
+  const W=591,H=886
+  const canvas=document.createElement('canvas')
+  canvas.width=W;canvas.height=H
+  const ctx=canvas.getContext('2d')
+  const voteLink=window.location.origin+'/vote.html?c='+commerce.id
+  const qrImg=await loadQRImage(voteLink,320)
+  ctx.fillStyle='#fff';ctx.fillRect(0,0,W,H)
+  ctx.fillStyle='#f5c842';ctx.fillRect(0,0,W,12)
+  ctx.textAlign='center'
+  ctx.fillStyle='#0a0a0a'
+  ctx.font='900 44px Georgia'
+  const nomLines=wrap(ctx,commerce.nom,W-60)
+  let y=80
+  nomLines.forEach(l=>{ctx.fillText(l,W/2,y);y+=52})
+  ctx.fillStyle='#f5c842';ctx.fillRect(W/2-25,y,50,5)
+  y+=35
+  ctx.fillStyle='#333';ctx.font='500 22px Arial'
+  ctx.fillText('Votre avis compte !',W/2,y+20)
+  ctx.fillStyle='#0a0a0a';ctx.font='800 24px Arial'
+  ctx.fillText('En 30 secondes',W/2,y+52)
+  const boxY=y+85
+  ctx.fillStyle='#fff8e1'
+  roundRect(ctx,40,boxY,W-80,100,14);ctx.fill()
+  ctx.strokeStyle='#f5c842';ctx.lineWidth=3
+  ctx.setLineDash([8,6]);ctx.stroke();ctx.setLineDash([])
+  ctx.font='26px Arial'
+  ctx.fillText('🎁',W/2,boxY+30)
+  ctx.fillStyle='#333';ctx.font='600 16px Arial'
+  ctx.fillText('Tentez de gagner',W/2,boxY+55)
+  ctx.fillStyle='#ff6b35';ctx.font='800 20px Arial'
+  const lotLines=wrap(ctx,commerce.lot||'un cadeau',W-120)
+  ctx.fillText(lotLines[0]||'un cadeau',W/2,boxY+82)
+  const qrX=(W-320)/2,qrY=boxY+130
+  ctx.fillStyle='#fff';ctx.fillRect(qrX-10,qrY-10,340,340)
+  ctx.strokeStyle='#f0f0f0';ctx.lineWidth=3
+  ctx.strokeRect(qrX-10,qrY-10,340,340)
+  ctx.drawImage(qrImg,qrX,qrY,320,320)
+  ctx.fillStyle='#666';ctx.font='600 16px Arial'
+  ctx.fillText('Scannez-moi',W/2,qrY+365)
+  ctx.fillStyle='#aaa';ctx.font='600 11px Arial'
+  ctx.fillText('Propulse par REVIEWO',W/2,H-20)
+  return canvas
+}
+
+async function render(){
+  const total=avis.length
+  const gc=avis.filter(a=>a.redirige_google).length
+  const avg=total>0?(avis.reduce((s,a)=>s+a.note,0)/total).toFixed(1):'-'
+  const rate=total>0?Math.round((gc/total)*100):0
+  const month=new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'})
+  const elig=avis.filter(a=>a.redirige_google&&a.telephone)
+  const googleAvis=avis.filter(a=>a.redirige_google)
+  const interneAvis=avis.filter(a=>!a.redirige_google)
+  const {data:tirages}=await supabase.from('tirages').select('*').eq('commerce_id',commerce.id).order('created_at',{ascending:false})
+  const lt=tirages&&tirages[0]
+  let h='<h1 class="welcome">Bienvenue, <em>'+commerce.nom+'</em></h1>'
+  h+='<p class="sub">Tableau de bord - '+month+'</p>'
+  h+='<div class="main-tabs">'
+  h+='<button class="main-tab active" id="mt-overview" onclick="showMainTab(\'overview\')">📊 Apercu</button>'
+  h+='<button class="main-tab" id="mt-affiches" onclick="showMainTab(\'affiches\')">🎨 Affiches</button>'
+  h+='<button class="main-tab" id="mt-avis" onclick="showMainTab(\'avis\')">⭐ Avis</button>'
+  h+='<button class="main-tab" id="mt-tirage" onclick="showMainTab(\'tirage\')">🎁 Tirage</button>'
+  h+='<button class="main-tab" id="mt-profil" onclick="showMainTab(\'profil\')">⚙️ Profil</button>'
+  h+='</div>'
+  h+='<div id="section-overview">'
+  h+='<div class="stats-grid">'
+  h+='<div class="stat"><div class="stat-label">Avis collectes</div><div class="stat-value">'+total+'</div><div class="stat-sub">Depuis le debut</div></div>'
+  h+='<div class="stat"><div class="stat-label">Rediriges Google</div><div class="stat-value green">'+gc+'</div><div class="stat-sub">'+rate+'%</div></div>'
+  h+='<div class="stat"><div class="stat-label">Note moyenne</div><div class="stat-value">'+avg+'</div><div class="stat-sub">Sur 5</div></div>'
+  h+='<div class="stat"><div class="stat-label">Plan</div><div class="stat-value green" style="font-size:22px">'+commerce.plan+'</div><div class="stat-sub">Actif</div></div>'
+  h+='</div>'
+  h+='<div class="card"><div class="card-title">📘 Besoin d aide ?</div>'
+  h+='<p style="color:#aaa;font-size:14px;line-height:1.6">Guide complet de A a Z.</p>'
+  h+='<a href="/guide.html" target="_blank"><button class="btn">📖 Lire le guide</button></a>'
+  h+='</div></div>'
+  h+='<div id="section-affiches" style="display:none">'
+  h+='<div class="card"><div class="card-title">Vos affiches Reviewo</div>'
+  h+='<div class="format-tabs">'
+  h+='<button class="format-tab active" id="fmt-a4" onclick="showFormat(\'a4\')">📄 A4 (21x29,7)</button>'
+  h+='<button class="format-tab" id="fmt-card" onclick="showFormat(\'card\')">🎴 Table (10x15)</button>'
+  h+='</div>'
+  h+='<div id="format-a4-box">'
+  h+='<div class="format-info">📄 Format A4 imprimable avec QR code</div>'
+  h+='<div class="preview-wrap" id="preview-a4-wrap"><div style="color:#888;padding:40px">Chargement du QR code...</div></div>'
+  h+='<button class="btn" onclick="downloadA4()">📥 Telecharger A4 (PNG)</button>'
+  h+='</div>'
+  h+='<div id="format-card-box" style="display:none">'
+  h+='<div class="format-info">🎴 Format 10x15 cm avec QR code</div>'
+  h+='<div class="preview-wrap" id="preview-card-wrap"><div style="color:#888;padding:40px">Chargement du QR code...</div></div>'
+  h+='<button class="btn" onclick="downloadCard()">📥 Telecharger carte (PNG)</button>'
+  h+='</div></div></div>'
+  h+='<div id="section-avis" style="display:none">'
+  h+='<div class="card"><div class="card-title">Avis recus</div>'
+  h+='<div class="tabs">'
+  h+='<button class="tab-btn active" id="tab-google-btn" onclick="showTab(\'google\')">Google ('+googleAvis.length+')</button>'
+  h+='<button class="tab-btn" id="tab-interne-btn" onclick="showTab(\'interne\')">A ameliorer ('+interneAvis.length+')</button>'
+  h+='</div>'
+  h+='<div id="tab-google">'
+  if(googleAvis.length===0){h+='<div class="empty">Aucun avis Google</div>'}
+  else{googleAvis.slice(0,20).forEach(a=>{
+    const stars='⭐'.repeat(a.note)
+    const d=new Date(a.created_at).toLocaleDateString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
+    h+='<div class="review-google"><div class="review-avatar">😊</div><div style="flex:1">'
+    h+='<div style="display:flex;justify-content:space-between;align-items:center"><span class="stars-display">'+stars+'</span><span class="review-time">'+d+'</span></div>'
+    if(a.telephone)h+='<div class="phone-info">📞 '+a.telephone+'</div>'
+    h+='</div></div>'
+  })}
+  h+='</div>'
+  h+='<div id="tab-interne" style="display:none">'
+  if(interneAvis.length===0){h+='<div class="empty">Aucun retour negatif</div>'}
+  else{interneAvis.slice(0,20).forEach(a=>{
+    const stars='⭐'.repeat(a.note)+'☆'.repeat(5-a.note)
+    const d=new Date(a.created_at).toLocaleDateString('fr-FR',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})
+    const emoji=a.note>=3?'😐':'😞'
+    h+='<div class="review-interne">'
+    h+='<div style="display:flex;justify-content:space-between;align-items:center"><div style="display:flex;gap:10px;align-items:center"><span style="font-size:22px">'+emoji+'</span><span class="stars-display">'+stars+'</span></div><span class="review-time">'+d+'</span></div>'
+    if(a.commentaire&&a.commentaire.trim()!==''){h+='<div class="review-comment">"'+a.commentaire+'"</div>'}
+    else{h+='<div class="no-comment">Pas de commentaire</div>'}
+    if(a.problemes&&a.problemes.length>0){
+      h+='<div style="margin-top:8px">'
+      a.problemes.forEach(p=>{h+='<span class="problem-tag">'+p+'</span>'})
+      h+='</div>'
+    }
+    h+='</div>'
+  })}
+  h+='</div></div></div>'
+  h+='<div id="section-tirage" style="display:none">'
+  h+='<div class="card"><div class="card-title">Tirage au sort mensuel</div>'
+  h+='<div class="lot-box">'
+  h+='<label class="input-label">Lot a faire gagner</label>'
+  h+='<input type="text" class="input" id="lot-input" value="'+(commerce.lot||'')+'" placeholder="Bon achat 50 euros">'
+  h+='<button class="btn btn-ghost" style="width:auto;padding:8px 14px;font-size:12px;margin-top:0" onclick="saveLot()">Enregistrer</button>'
+  h+='<div class="lot-stats"><span style="font-size:13px;color:#888">Participants eligibles</span><span class="lot-count">'+elig.length+'</span></div>'
+  h+='</div>'
+  h+='<button class="btn btn-gold" onclick="doTirage()"'+(elig.length===0?' disabled':'')+'>'+(elig.length===0?'Aucun participant':'Lancer le tirage')+'</button>'
+  if(lt){h+='<div class="winner-box"><div class="winner-title">Dernier gagnant</div><div class="winner-phone">'+lt.telephone_gagnant+'</div><div style="font-size:12px;color:#666;margin-top:6px">Lot: '+lt.lot+'</div></div>'}
+  h+='</div></div>'
+  const now=new Date()
+  const trialEnd=commerce.trial_end?new Date(commerce.trial_end):null
+  const daysLeft=trialEnd?Math.ceil((trialEnd-now)/(1000*60*60*24)):0
+  let subClass='trial',subBadge='trial',subLabel='Essai gratuit',subDetails=''
+  if(commerce.statut==='active'){
+    subClass='active';subBadge='active';subLabel='Abonnement actif'
+    subDetails='<div class="sub-detail">Montant : <strong>'+(commerce.montant_mensuel||29)+'€/mois</strong></div>'
+  }else if(commerce.statut==='cancelled'){
+    subClass='expired';subBadge='expired';subLabel='Annule'
+  }else if(daysLeft>0){
+    subDetails='<div class="sub-detail">Il reste <strong>'+daysLeft+' jour(s)</strong></div>'
+  }else{
+    subClass='expired';subBadge='expired';subLabel='Essai expire'
+  }
+  h+='<div id="section-profil" style="display:none">'
+  h+='<div class="sub-hero '+subClass+'">'
+  h+='<span class="sub-badge '+subBadge+'">'+subLabel+'</span>'
+  h+='<div class="sub-title">Mon abonnement</div>'+subDetails
+  if(commerce.statut!=='active'){h+='<button class="btn" onclick="subscribeNow()">S abonner maintenant</button>'}
+  h+='</div>'
+  h+='<div class="card"><div class="card-title">👤 Informations</div>'
+  h+='<label class="input-label">Nom</label><input type="text" class="input" id="edit-nom" value="'+(commerce.nom||'')+'">'
+  h+='<label class="input-label">Email</label><input type="email" class="input" id="edit-email" value="'+(commerce.email||'')+'">'
+  h+='<label class="input-label">Telephone</label><input type="tel" class="input" id="edit-tel" value="'+(commerce.telephone||'')+'">'
+  h+='<label class="input-label">Lien Google</label><input type="url" class="input" id="edit-google" value="'+(commerce.lien_google||'')+'">'
+  h+='<button class="btn" onclick="saveProfile()">💾 Enregistrer</button>'
+  h+='</div>'
+  h+='<div class="card"><div class="card-title">🔒 Mot de passe</div>'
+  h+='<input type="password" class="input" id="new-pwd" placeholder="Nouveau mot de passe">'
+  h+='<input type="password" class="input" id="new-pwd2" placeholder="Confirmer">'
+  h+='<button class="btn btn-ghost" onclick="changePassword()">Mettre a jour</button>'
+  h+='</div>'
+  h+='<div class="card"><div class="card-title" style="color:#ef4444">⚠️ Zone dangereuse</div>'
+  if(commerce.statut==='active'){
+    h+='<div class="danger-zone"><div class="danger-zone-title">Se desabonner</div><div class="danger-zone-desc">Annule l abonnement.</div><button class="btn btn-danger" onclick="unsubscribe()">Annuler abonnement</button></div>'
+  }
+  h+='<div class="danger-zone" style="margin-top:10px"><div class="danger-zone-title">Supprimer compte</div><div class="danger-zone-desc">Action irreversible.</div><button class="btn btn-danger" onclick="deleteAccount()">Supprimer</button></div>'
+  h+='</div></div>'
+  document.getElementById('content').innerHTML=h
+  setTimeout(async()=>{
+    try{
+      const a4Wrap=document.getElementById('preview-a4-wrap')
+      const cdWrap=document.getElementById('preview-card-wrap')
+      if(a4Wrap){
+        const c=await drawA4()
+        c.className='preview-canvas'
+        a4Wrap.innerHTML=''
+        a4Wrap.appendChild(c)
+      }
+      if(cdWrap){
+        const c=await drawCard()
+        c.className='preview-canvas'
+        cdWrap.innerHTML=''
+        cdWrap.appendChild(c)
+      }
+    }catch(e){console.error('Erreur dessin:',e)}
+  },300)
+}
+
+window.showMainTab=function(tab){
+  ['overview','affiches','avis','tirage','profil'].forEach(t=>{
+    const sec=document.getElementById('section-'+t)
+    const btn=document.getElementById('mt-'+t)
+    if(sec)sec.style.display=t===tab?'block':'none'
+    if(btn)btn.classList.toggle('active',t===tab)
+  })
+}
+window.showFormat=function(f){
+  document.getElementById('format-a4-box').style.display=f==='a4'?'block':'none'
+  document.getElementById('format-card-box').style.display=f==='card'?'block':'none'
+  document.getElementById('fmt-a4').classList.toggle('active',f==='a4')
+  document.getElementById('fmt-card').classList.toggle('active',f==='card')
+}
+window.showTab=function(tab){
+  document.getElementById('tab-google').style.display=tab==='google'?'block':'none'
+  document.getElementById('tab-interne').style.display=tab==='interne'?'block':'none'
+  document.getElementById('tab-google-btn').classList.toggle('active',tab==='google')
+  document.getElementById('tab-interne-btn').classList.toggle('active',tab==='interne')
+}
+window.downloadA4=async function(){
+  try{
+    const c=await drawA4()
+    const l=document.createElement('a')
+    l.download='reviewo-affiche-A4.png'
+    l.href=c.toDataURL('image/png')
+    l.click()
+  }catch(e){alert('Erreur: '+e.message)}
+}
+window.downloadCard=async function(){
+  try{
+    const c=await drawCard()
+    const l=document.createElement('a')
+    l.download='reviewo-carte-table.png'
+    l.href=c.toDataURL('image/png')
+    l.click()
+  }catch(e){alert('Erreur: '+e.message)}
+}
+window.saveLot=async function(){
+  const nl=document.getElementById('lot-input').value.trim()
+  if(!nl)return alert('Saisir un lot')
+  const {error}=await supabase.from('commerces').update({lot:nl}).eq('id',commerce.id)
+  if(error)return alert('Erreur')
+  commerce.lot=nl
+  alert('Lot enregistre')
+  render()
+}
+window.saveProfile=async function(){
+  const nom=document.getElementById('edit-nom').value.trim()
+  const email=document.getElementById('edit-email').value.trim()
+  const tel=document.getElementById('edit-tel').value.trim()
+  const google=document.getElementById('edit-google').value.trim()
+  if(!nom||!email)return alert('Nom et email obligatoires')
+  const {error}=await supabase.from('commerces').update({nom:nom,email:email,telephone:tel||null,lien_google:google||null}).eq('id',commerce.id)
+  if(error)return alert('Erreur')
+  commerce.nom=nom;commerce.email=email;commerce.telephone=tel;commerce.lien_google=google
+  alert('✅ Enregistre')
+  render()
+}
+window.changePassword=async function(){
+  const p1=document.getElementById('new-pwd').value
+  const p2=document.getElementById('new-pwd2').value
+  if(!p1||p1.length<6)return alert('Min 6 caracteres')
+  if(p1!==p2)return alert('Mots de passe differents')
+  const {error}=await supabase.auth.updateUser({password:p1})
+  if(error)return alert('Erreur')
+  alert('✅ Mot de passe mis a jour')
+}
+window.subscribeNow=function(){window.location.href=STRIPE_LINK}
+window.unsubscribe=async function(){
+  if(!confirm('Annuler abonnement ?'))return
+  await supabase.from('commerces').update({statut:'cancelled'}).eq('id',commerce.id)
+  alert('Annule')
+  load()
+}
+window.deleteAccount=async function(){
+  if(!confirm('⚠️ Supprimer DEFINITIVEMENT ?'))return
+  if(prompt('Tapez SUPPRIMER')!=='SUPPRIMER')return
+  await supabase.from('avis').delete().eq('commerce_id',commerce.id)
+  await supabase.from('tirages').delete().eq('commerce_id',commerce.id)
+  await supabase.from('clients').delete().eq('commerce_id',commerce.id)
+  await supabase.from('commerces').delete().eq('id',commerce.id)
+  await supabase.auth.signOut()
+  window.location.href='/'
+}
+window.doTirage=async function(){
+  const elig=avis.filter(a=>a.redirige_google&&a.telephone)
+  if(elig.length===0)return alert('Aucun participant')
+  if(!confirm('Lancer le tirage parmi '+elig.length+' ?'))return
+  const w=elig[Math.floor(Math.random()*elig.length)]
+  await supabase.from('tirages').insert({commerce_id:commerce.id,avis_id:w.id,lot:commerce.lot||'Lot',telephone_gagnant:w.telephone,mois:new Date().toLocaleDateString('fr-FR',{month:'long',year:'numeric'})})
+  alert('Gagnant: '+w.telephone)
+  load()
+}
+window.logout=async function(){
+  await supabase.auth.signOut()
+  window.location.href='/inscription.html'
+}
+load().then(()=>checkPayment())
+</script>
+</body>
+</html>
