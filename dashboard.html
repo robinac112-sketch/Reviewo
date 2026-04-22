@@ -557,7 +557,7 @@ window.changePassword=async function(){
   alert('✅ Mot de passe mis a jour')
 }
 window.subscribeNow=function(){window.location.href=STRIPE_LINK}
-window.unsubscribe=async function(){
+window.unsubscribe=function(){
   ifw(window.open('https://billing.stripe.com/p/login/cNi9AT0tt0NKe5N7LY0kE00','_blank')
 window.deleteAccount=async function(){
   if(!confirm('⚠️ Supprimer DEFINITIVEMENT ?'))return
