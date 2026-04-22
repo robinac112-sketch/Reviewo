@@ -558,7 +558,9 @@ window.changePassword=async function(){
 }
 window.subscribeNow=function(){window.location.href=STRIPE_LINK}
 window.unsubscribe=function(){
-  (window.open('https://billing.stripe.com/p/login/cNi9AT0tt0NKe5N7LY0kE00','_blank'
+  (window.open('https://billing.stripe.com/p/login/cNi9AT0tt0NKe5N7LY0kE00','_blank')
+   }
+  
 window.deleteAccount=async function(){
   if(!confirm('⚠️ Supprimer DEFINITIVEMENT ?'))return
   if(prompt('Tapez SUPPRIMER')!=='SUPPRIMER')return
