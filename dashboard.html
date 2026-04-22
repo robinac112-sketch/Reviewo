@@ -558,11 +558,7 @@ window.changePassword=async function(){
 }
 window.subscribeNow=function(){window.location.href=STRIPE_LINK}
 window.unsubscribe=async function(){
-  if(!confirm('Annuler abonnement ? Vous perdrez l acces immediatement.'))return
-  await supabase.from('commerces').update({statut:'cancelled'}).eq('id',commerce.id)
-  alert('Abonnement annule. Vous allez etre deconnecte.')
-  load()
-}
+  if(window.open('https://billing.stripe.com/p/login/cNi9AY0tt0NKe5N7LY0kE00','_blank')
 window.deleteAccount=async function(){
   if(!confirm('⚠️ Supprimer DEFINITIVEMENT ?'))return
   if(prompt('Tapez SUPPRIMER')!=='SUPPRIMER')return
